@@ -14,10 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+  
 
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
+ 
+    #[Route('/accueil', name: 'app_accueil')]
+    public function indexAcceuil(): Response
+    {
+        return $this->render('accueil/index.html.twig', [
+            'controller_name' => 'ArticleController',
+        ]);
+    }
+    
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
