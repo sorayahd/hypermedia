@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +31,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\ManyToMany(targetEntity: Article::class, mappedBy: 'favoris')]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->favoris = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,5 +108,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Article $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Article $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            $favori->removeFavori($this);
+        }
+
+        return $this;
     }
 }

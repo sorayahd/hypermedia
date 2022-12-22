@@ -1,8 +1,4 @@
 {% extends 'index.html.twig' %}
-
-
-
-
 {% block body %}
 
   <!-- Section-->
@@ -14,9 +10,48 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                            <!-- Product image-->
+                            <div class= "position-absolute" style="top: 0.5rem; right: 0.5rem; color:red">
                             
+                           {#{dump(favoris)}#} 
+
+                           {# {% if is_granted("ROLE_USER") %}
+                           
+							{% for favoris in article.favoris %}
+								{% if favoris.id == app.user.id %}
+                                   <a href="{{ path('app_retrait_favoris', {id: article.id}) }}">
+                                    <i class= "bi bi-heart-fill" style="color:red"></i> </a>
+                                    {% else %}
+                                    <a href="{{ path('app_ajout_favoris', {id: article.id}) }}">
+                                    </a>
+								{% endif %}    
+                                {% else %}
+                                <a href="{{ path('app_ajout_favoris', {id: article.id}) }}">
+                                    <i class= "bi bi-heart"style="color:red"></i> </a>
+							{% endfor %}
+                            
+                            {% else %}
+                                <i class= "bi bi-heart" style="color:red"></i>
+                                {% endif %} #}
+
+                             {% if is_granted("ROLE_USER") %}
+                            {% set isFavorite = false %}
+							{% for favoris in article.favoris %}
+								{% if favoris.id == app.user.id %}
+                                    {% set isFavorite = true %}
+								{% endif %}    
+							{% endfor %}
+                            {% if isFavorite %}
+								<a href="{{ path('app_retrait_favoris', {id: article.id}) }}"><i class="fas fa-heart"></i></a>
+                            {% else %}
+								<a href="{{ path('app_ajout_favoris', {id: article.id}) }}"><i class="far fa-heart"></i></a>
+                            {% endif %}
+
+						{% else %}
+							<i class="far fa-heart"></i>
+						{% endif %}
+
+
+                          </div>
                             <img class="card-img-top" src="{{asset('uploads/article/'~ article.image) }} " width="10%"   />
                             <!-- Product details-->
                         
@@ -34,12 +69,13 @@
                                     </div>
                                     <!-- Product price-->
                                     <span class="text-muted text-decoration-line-through"></span>
-                                    {{article.prix}}
+                                    {{article.prix  ~'$'}}
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
+                                <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href=" {{ path ('add_cart',{'id':article.id}) }}}">Ajouter au panier</a></div>
                             </div>
                         </div>
                     </div>

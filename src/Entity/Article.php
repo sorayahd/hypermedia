@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -24,6 +26,14 @@ class Article
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoris')]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->favoris = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +84,30 @@ class Article
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(user $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(user $favori): self
+    {
+        $this->favoris->removeElement($favori);
 
         return $this;
     }
