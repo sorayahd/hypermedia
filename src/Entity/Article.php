@@ -30,6 +30,9 @@ class Article
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoris')]
     private Collection $favoris;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $promotion = null;
+
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
@@ -108,6 +111,18 @@ class Article
     public function removeFavori(user $favori): self
     {
         $this->favoris->removeElement($favori);
+
+        return $this;
+    }
+
+    public function getPromotion(): ?int
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?int $promotion): self
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }

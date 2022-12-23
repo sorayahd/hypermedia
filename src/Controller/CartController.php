@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\CssSelector\Parser\ParserInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +14,8 @@ class CartController extends AbstractController
     public function index(SessionInterface $session,ArticleRepository $articleRepository): Response
     {
         $panier = $session->get('panier', []);
+        $total = 0;
+        $quantityTotal = 0;
 
         $panierWithData = [];
 
@@ -25,12 +25,15 @@ class CartController extends AbstractController
                 'quantity'=> $quantity
                
             ];
-        
+
+            $total += $articleRepository->find($id)->getPrix() * $quantity;
+            $quantityTotal += $quantity;
             
         }
-       // dd($panierWithData);
+      
         return $this->render('cart/index.html.twig', [
-            'items'=>$panierWithData
+            'items'=>$panierWithData,
+            'total'=>$total
         ]);
     }
 
@@ -54,7 +57,7 @@ class CartController extends AbstractController
 
         $session->set('panier', $panier);
         //dd($session->get('panier'));
-        return $this->redirectToRoute("app_article_index");
+        return $this->redirectToRoute("app_cart");
     }
 
 
@@ -68,5 +71,5 @@ class CartController extends AbstractController
         return $this->redirect("app_cart");
     }
 
-
+ 
 }

@@ -12,26 +12,7 @@
                             <!-- Sale badge-->
                             <div class= "position-absolute" style="top: 0.5rem; right: 0.5rem; color:red">
                             
-                           {#{dump(favoris)}#} 
-
-                           {# {% if is_granted("ROLE_USER") %}
                            
-							{% for favoris in article.favoris %}
-								{% if favoris.id == app.user.id %}
-                                   <a href="{{ path('app_retrait_favoris', {id: article.id}) }}">
-                                    <i class= "bi bi-heart-fill" style="color:red"></i> </a>
-                                    {% else %}
-                                    <a href="{{ path('app_ajout_favoris', {id: article.id}) }}">
-                                    </a>
-								{% endif %}    
-                                {% else %}
-                                <a href="{{ path('app_ajout_favoris', {id: article.id}) }}">
-                                    <i class= "bi bi-heart"style="color:red"></i> </a>
-							{% endfor %}
-                            
-                            {% else %}
-                                <i class= "bi bi-heart" style="color:red"></i>
-                                {% endif %} #}
 
                              {% if is_granted("ROLE_USER") %}
                             {% set isFavorite = false %}
@@ -41,24 +22,26 @@
 								{% endif %}    
 							{% endfor %}
                             {% if isFavorite %}
-								<a href="{{ path('app_retrait_favoris', {id: article.id}) }}"><i class="fas fa-heart"></i></a>
+								<a href="{{ path('app_retrait_favoris', {id: article.id}) }}"><i class="fas fa-heart" style="color:red" ></i></a>
                             {% else %}
-								<a href="{{ path('app_ajout_favoris', {id: article.id}) }}"><i class="far fa-heart"></i></a>
+								<a href="{{ path('app_ajout_favoris', {id: article.id}) }}"><i class="far fa-heart" style="color:red"></i></a>
                             {% endif %}
 
 						{% else %}
-							<i class="far fa-heart"></i>
+							<i class="far fa-heart" style="color:red"></i>
 						{% endif %}
 
 
                           </div>
-                            <img class="card-img-top" src="{{asset('uploads/article/'~ article.image) }} " width="10%"   />
+                           <a href="{{ path ('app_article_show',{'id':article.id})  }}" >
+                           <img class="card-img-top" src="{{asset('uploads/article/'~ article.image) }} " width="10%"   /></a>
                             <!-- Product details-->
                         
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{article.nom}}</h5>
+                                     <h5 class="fw-bolder">{{article.nom}} </h5></a>
+                                  
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         <div class="bi-star-fill"></div>
