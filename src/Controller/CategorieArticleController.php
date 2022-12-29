@@ -21,7 +21,7 @@ class CategorieArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_categorie_article_new', methods: ['GET', 'POST'])]
+    #[Route('/categorie/new', name: 'app_categorie_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CategorieArticleRepository $categorieArticleRepository): Response
     {
         $categorieArticle = new CategorieArticle();
@@ -57,7 +57,7 @@ class CategorieArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categorieArticleRepository->save($categorieArticle, true);
 
-            return $this->redirectToRoute('', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_app_categorie_article_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('categorie_article/edit.html.twig', [

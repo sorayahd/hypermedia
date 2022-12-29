@@ -33,6 +33,12 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $promotion = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $genre = null;
+
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?CategorieArticle $categorie = null;
+
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
@@ -126,4 +132,29 @@ class Article
 
         return $this;
     }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(string $genre): self
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?CategorieArticle
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?CategorieArticle $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+   
 }

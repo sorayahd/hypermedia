@@ -81,11 +81,12 @@ transform: scale(1.5);
                             <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand"></span>
                                 <h5 class="text-uppercase">{{article.nom}}</h5>
                                 {% if article.promotion is not null  %}
-                                <div class="price d-flex flex-row align-items-center"> <span class="act-price">{{article.promotion}}&nbsp </span>
-                                    <div class="ml-2"> <small class="dis-price">{{article.prix}}</small> </div>
+                                <div class="price d-flex flex-row align-items-center"> <span class="act-price">
+                                {{article.promotion}}  € &nbsp </span>
+                                    <div class="ml-2"> <small class="dis-price">{{article.prix}} €</small> </div>
                                 </div>
                                 {% elseif article.promotion is null  %}
-                                  <div class="ml-2"> <small class="act-price">{{article.prix}}</small> <span></span> </div>
+                                  <div class="ml-2"> <small class="act-price">{{article.prix}} €</small> <span></span> </div>
                                   {% endif %}
                             </div>
                             <p class="about">{{article.description}}.</p>
@@ -94,7 +95,10 @@ transform: scale(1.5);
                             </div>
                             <div class="cart mt-4 align-items-center"><a class="btn btn-danger text-uppercase mr-2 px-4" 
                              href=" {{ path ('add_cart',{'id':article.id}) }}}"
-                            >Ajouter au panier</a>  <i class="fa fa-heart text-muted"></i></div>
+                            >Ajouter au panier</a>  
+                             <a href= "{{ path ('app_ajout_favoris',{'id':article.id}) }}}" <i class="fa fa-heart text-muted"></i>
+                             </a>
+                             </div>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +17,14 @@ class ArticleType extends AbstractType
             ->add('nom')
             ->add('description')
             ->add('prix')
+            ->add('genre',ChoiceType::class,[
+
+                'choices'=>[
+                    'Femme'=>'Femme',
+                    'Homme'=>'Homme',
+
+                ],
+            ])
             ->add('image',FileType::class, [
                 'label' => 'Image',
 
@@ -27,6 +36,7 @@ class ArticleType extends AbstractType
                 'required' => false,
 ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

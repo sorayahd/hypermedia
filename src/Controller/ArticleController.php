@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Form\Article1Type;
 use App\Repository\ArticleRepository;
+use App\Repository\CategorieArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FileUploadError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -16,13 +17,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
  
     #[Route('/accueil', name: 'app_accueil')]
-    public function indexAcceuil(): Response
+    public function indexAcceuil(SessionInterface $session,ArticleRepository $articleRepository): Response
     {
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'ArticleController',
@@ -30,10 +32,34 @@ class ArticleController extends AbstractController
     }
     
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(ArticleRepository $articleRepository,SessionInterface $session): Response
     {
+
+
+
+        $panier = $session->get('panier', []);
+        $total = 0;
+        $quantityTotal = 0;
+
+        $panierWithData = [];
+
+        foreach($panier as $id => $quantity) {
+            $panierWithData[]= [
+                'product'=>$articleRepository->find($id),
+                'quantity'=> $quantity
+               
+            ];
+
+            $total += $articleRepository->find($id)->getPrix() * $quantity;
+            $quantityTotal += $quantity;
+            
+        }
+      
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
+            'items'=>$panierWithData,
+            'total'=>$total,
+            'quantity'=>$quantityTotal
         ]);
     }
     
@@ -124,6 +150,179 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
+
+ //----------------------------ARTICLE PAR GENRE----------------------
+
+    /**
+     * @Route("/genre/homme", name="app_article_homme_show")
+     * 
+     */
+
+    public function ArticleHomme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy(['genre' => 'Homme']);
+
+        return $this->render('article/ArticleHomme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+     /**
+     * @Route("/genre/femme", name="app_article_femme_show")
+     * 
+     */
+
+     public function ArticleFemme( ArticleRepository $repository ): Response
+     {
+ 
+         $articles =$repository->findBy(['genre' => 'Femme']);
+ 
+         return $this->render('article/ArticleFemme.html.twig', [
+             'articles' => $articles,
+         ]);
+     }
+ 
+
+
+
+     //---------------------------------Article par categorie(jeans)--------------
+
+      /**
+     * @Route("/jeans/homme", name="app_article_jeans_homme")
+     * 
+     */
+    public function JeansHomme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Homme',
+            'categorie'=> 2
+        ]);
+
+        return $this->render('article/Jeans/JeansHomme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+ 
+      /**
+     * @Route("/jeans/femme", name="app_article_jeans_femme")
+     * 
+     */
+    public function JeansFemme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Femme',
+            'categorie'=> 2
+    ]);
+
+        return $this->render('article/Jeans/JeansFemme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+
+
+
+
+        //---------------------------------Article par categorie(Tshirt)--------------
+
+      /**
+     * @Route("/tshirt/homme", name="app_article_tshirt_homme")
+     * 
+     */
+    public function TshirtHomme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Homme',
+            'categorie'=> 1
+        ]);
+
+        return $this->render('article/T-shirt/tshirtHomme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+ 
+      /**
+     * @Route("/tshirt/femme", name="app_article_tshirt_femme")
+     * 
+     */
+    public function TshirtFemme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Femme',
+            'categorie'=> 1
+    ]);
+
+        return $this->render('article/T-shirt/tshirtFemme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+//----------------------Chaussure------------------------------
+
+  /**
+     * @Route("/chaussure/homme", name="app_article_chaussure_homme")
+     * 
+     */
+    public function chaussureHomme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Homme',
+            'categorie'=> 5
+        ]);
+
+        return $this->render('article/T-shirt/tshirtHomme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+ 
+      /**
+     * @Route("/tshirt/femme", name="app_article_chaussure_femme")
+     * 
+     */
+    public function chaussureFemme( ArticleRepository $repository ): Response
+    {
+
+        $articles =$repository->findBy([
+            'genre' => 'Femme',
+            'categorie'=> 5
+    ]);
+
+        return $this->render('article/T-shirt/tshirtFemme.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+
+
+
+    //-----------------------------------------------PROMO--------------------------
+
+    /**
+     * @Route("/promotion/promotion", name="app_article_promotion")
+     * 
+     */
+    public function promotion( ArticleRepository $repository ): Response
+    {
+
+        $articles = $repository->ArticleEnPromotion(0);
+
+        return $this->render('article/Promo/promotion.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+ 
+  
+
+
+     
+
+
 
     //-----------------------------------------------Favoris--------------------------
     

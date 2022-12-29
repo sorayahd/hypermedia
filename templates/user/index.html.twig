@@ -1,0 +1,182 @@
+{% extends 'index.html.twig' %}
+
+
+
+
+{% block body %}
+<style>
+			                
+</style>				              
+  <!-- Section-->
+     <div class="container bootstrap snippets bootdey">
+    <h1 class="text-dark text-center">Mes informations </h1>
+      <hr>
+	<div class="row">
+      <!-- left column -->
+      <div class="col-md-3">
+        <div class="text-center">
+         {# <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar"> #}
+          
+          {# <input type="file" class="form-control"> #}
+        </div>
+      </div>
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <div class="alert">
+          {# <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i> #}
+        
+        </div>
+        <h3>Mes informations personelle:</h3>
+        
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Nom utilisateur: </label>
+            <div class="col-lg-8">
+              <div class="form-control" type="text">{{app.user.name}}</div>
+             
+            </div>
+          </div>
+          
+          
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <div class="form-control" type="text">
+              {{app.user.email}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            {# <label class="col-lg-3 control-label">Adresse:</label>
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="user_time_zone" class="form-control">
+                
+                  
+                </select>
+              </div>
+            </div> #}
+            
+             <div class="col-lg-8">
+             <br>
+            <a href="{{ path ('users_profil_modifier')}}" class="btn btn-primary" type="button">
+            Modifier mon profile</a>
+             <button class="btn btn-primary" type="button">modifier mon mot de passe </button>
+ 
+             </div>
+             </br>
+              <hr>
+               <h3>Mes adresses :</h3>
+                <a href="{{ path ('app_adresse_new')}}" class="btn btn-primary" > Ajouter une adresse </a>
+           
+                  </div>
+  <br>
+         
+
+         
+{#           
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+   {% for adresse in app.user.adresses %}
+  <div class="col">
+  <div class="card h-100">
+    <div class="card border">
+     <i class="fa-solid fa-house-user fa-2x" style="color:green"></i>
+      <div class="card-body">
+        <h5 class="card-title">Adresse:</h5>
+        <p class="card-text">
+        {{adresse.adresse}}
+         .</p>
+      </div>
+      <div class="card-footer">
+        
+    <a  href=" {{ path ('app_adresse_edit',{'id':adresse.id}) }}}"  class="card-link">Modifier</a>
+    <a href=" {{ path ('app_adresse_delete',{'id':adresse.id}) }}}" class="card-link">Supprimer</a>
+  </div>
+   
+      </div>
+    </div>
+    
+  </div>
+
+ 
+
+
+
+
+{% endfor %}
+
+  
+</div> #}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+   {% for adresse in app.user.adresses %}
+  <div class="col">
+    <div class="card h-100">
+     <i class="fa-solid fa-house-user fa-2x" style="color:green"></i>
+      <div class="card-body">
+        <h5 class="card-title">Adresse : </h5>
+        <p class="card-text">
+        {{adresse.adresse}}
+         {{adresse.complement}}
+          {{adresse.postale}}
+           {{adresse.pays}}
+        </p>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">
+        <a  href="{{ path('app_adresse_edit', {'id': adresse.id}) }}"  
+        class="card-link">Modifier</a>
+    <a href=" {{ path('app_adresse_delete', {'id': adresse.id}) }}" class="card-link">Supprimer</a>
+    </small>
+      </div>
+    </div>
+  </div>
+ {% endfor %}
+ 
+</div>
+
+    
+        </form>
+      </div>
+  </div>
+</div>
+ </div>
+<hr>
+
+
+
+<script type="text/javascript">
+/* Voici la fonction javascript qui change la propriété "display"
+pour afficher ou non le div selon que ce soit "none" ou "block". */
+ 
+function AfficherMasquer()
+{
+divInfo = document.getElementById('divacacher');
+ 
+if (divInfo.style.display == 'none')
+divInfo.style.display = 'block';
+else
+divInfo.style.display = 'none';
+ 
+}
+</script>
+ 
+
+
+
+
+
+
+
+   
+
+   
+{% endblock %}
+
+
+
+
+
+
+

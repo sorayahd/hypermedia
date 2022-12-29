@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\CategorieArticle;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +18,22 @@ class Article1Type extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
+            ->add('categorie',EntityType::class, [
+                'required' => true,
+                'class' => CategorieArticle::class,
+                
+            ])
             ->add('prix')
+            ->add('genre',ChoiceType::class,[
+
+                'choices'=>[
+                    'Femme'=>'Femme',
+                    'Homme'=>'Homme',
+                    
+
+                ],
+                
+            ])
             ->add('image',FileType::class, [
                 'label' => 'Image',
 

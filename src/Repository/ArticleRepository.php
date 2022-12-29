@@ -39,6 +39,18 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function ArticleEnPromotion($value): array
+       {
+           return $this->createQueryBuilder('a')
+               ->andWhere('a.promotion > :val')
+               ->setParameter('val', $value)
+               ->orderBy('a.id', 'ASC')
+               ->getQuery()
+               ->getResult()
+           ;
+       }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
@@ -63,4 +75,8 @@ class ArticleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+
 }

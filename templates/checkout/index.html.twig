@@ -1,0 +1,50 @@
+{% extends 'index.html.twig' %}
+{% block title %}Recapitulation commande Naturéa{% endblock %}
+
+{% block body %}
+
+   <div class="section checkout">
+        <div class="container g-xl-1">
+         {{ form_start( checkout)}}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="heading_s1">
+                            <h4>Vos adresses de livraison</h4>
+                            <div class="content"> <!-- raw permet l'interprétation de l'html -->
+                                 {{ form_widget(checkout.address) | replace({'[spr]' : '<br>','[hrr]' : '<hr>'}) | raw}}
+                            </div>
+                            <a href="{{ path('app_adresse_new') }}" class="btn btn-primary btn-block mt-1">Nouvelle adresse</a>
+                    </div>
+                    <div class="heading_s1">
+                        <h4>Entreprises de livraison</h4>
+                        <div class="content">
+                            {{ form_widget(checkout.transporteurs)  | replace({'[spr]' : '<br>'}) | raw }}
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="heading_s1">
+                            <h4>Votre commande</h4>
+                        </div>
+                        <div class="table-responsive order_table">
+                            
+                        </div>
+                        <div class="payment_method">
+                            <div class="heading_s1">
+                                <h4>Payment</h4>
+                            </div>
+                            
+                        </div>
+                        <button type="submit" id="checkout" class="btn btn-fill-out btn-block">Paiement</button>
+                    </div>
+                </div>
+            </div>
+           {{ form_end(checkout) }}
+        </div>
+    </div>
+
+
+{% endblock %}
