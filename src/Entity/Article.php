@@ -33,15 +33,32 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $promotion = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $genre = null;
+  
+
+    // #[ORM\ManyToOne(inversedBy: 'articles')]
+  
+
+    // #[ORM\Column(length: 255)]
+    // private ?string $genre = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?CategorieArticle $categorie = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Genre $sexe = null;
+
+    #[ORM\OneToMany(mappedBy: 'articles', targetEntity: CartDetails::class)]
+    private Collection $cartDetails;
+
 
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
+        $this->cartDetails = new ArrayCollection();
+
+        
     }
 
     public function getId(): ?int
@@ -133,17 +150,55 @@ class Article
         return $this;
     }
 
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
 
-    public function setGenre(string $genre): self
-    {
-        $this->genre = $genre;
+   
 
-        return $this;
-    }
+    // /**
+    //  * @return Collection<int, ArticlePanier>
+    //  */
+    // public function getArticlePaniers(): Collection
+    // {
+    //     return $this->articlePaniers;
+    // }
+
+    // public function addArticlePanier(ArticlePanier $articlePanier): self
+    // {
+    //     if (!$this->articlePaniers->contains($articlePanier)) {
+    //         $this->articlePaniers->add($articlePanier);
+    //         $articlePanier->setArticle($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeArticlePanier(ArticlePanier $articlePanier): self
+    // {
+    //     if ($this->articlePaniers->removeElement($articlePanier)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($articlePanier->getArticle() === $this) {
+    //             $articlePanier->setArticle(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+
+   
+  
+
+   
+
+    // public function getGenre(): ?string
+    // {
+    //     return $this->genre;
+    // }
+
+    // public function setGenre(string $genre): self
+    // {
+    //     $this->genre = $genre;
+
+    //     return $this;
+    // }
 
     public function getCategorie(): ?CategorieArticle
     {
@@ -153,6 +208,53 @@ class Article
     public function setCategorie(?CategorieArticle $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
+    public function getSexe(): ?Genre
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(?Genre $sexe): self
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartDetails>
+     */
+    public function getCartDetails(): Collection
+    {
+        return $this->cartDetails;
+    }
+
+    public function addCartDetail(CartDetails $cartDetail): self
+    {
+        if (!$this->cartDetails->contains($cartDetail)) {
+            $this->cartDetails->add($cartDetail);
+            $cartDetail->setArticles($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartDetail(CartDetails $cartDetail): self
+    {
+        if ($this->cartDetails->removeElement($cartDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($cartDetail->getArticles() === $this) {
+                $cartDetail->setArticles(null);
+            }
+        }
 
         return $this;
     }

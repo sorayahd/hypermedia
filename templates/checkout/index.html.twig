@@ -2,49 +2,286 @@
 {% block title %}Recapitulation commande Naturéa{% endblock %}
 
 {% block body %}
+<style>
 
-   <div class="section checkout">
-        <div class="container g-xl-1">
-         {{ form_start( checkout)}}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="heading_s1">
-                            <h4>Vos adresses de livraison</h4>
-                            <div class="content"> <!-- raw permet l'interprétation de l'html -->
-                                 {{ form_widget(checkout.address) | replace({'[spr]' : '<br>','[hrr]' : '<hr>'}) | raw}}
+
+.container {
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.cc-number.identified {
+    background-repeat: no-repeat;
+    background-position-y: 11px;
+    background-position-x: 99%
+}
+
+.right-card {
+    border-top: 10px blue solid;
+    padding-top: 1rem;
+    width: fit-content
+}
+
+.btn-group-lg>.btn,
+.btn-lg {
+    width: -webkit-fill-available
+}
+
+li.borderless {
+    border-top: 0 none !important;
+    font-size: 15px;
+    padding: 0;
+    padding-top: 5%
+}
+
+.fa-check {
+    color: rgb(0, 195, 255)
+}
+
+.card,
+.card-header,
+.card-footer {
+    background-color: white !important
+}
+
+.card-header {
+    border-bottom: none
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+.second-card,
+.first-card {
+    border-top: 1px solid #ccc !important;
+    padding-top: 2rem
+}
+
+.card-image {
+    width: 45px;
+    margin-top: -9px
+}
+
+@media (max-width: 1000px) {
+    .card {
+        padding: 0 !important
+    }
+}
+
+.stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.stepper-item::before {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: -50%;
+  z-index: 2;
+}
+
+.stepper-item::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+}
+
+.stepper-item .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+
+.stepper-item.active {
+  font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+  background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #4bb543;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 3;
+}
+
+.stepper-item:first-child::before {
+  content: none;
+}
+.stepper-item:last-child::after {
+  content: none;
+}
+
+</style>
+
+
+<br>
+
+
+
+ 
+                        
+                  
+           
+               
+    <div class="stepper-wrapper">
+  <div class="stepper-item completed">
+    <div class="step-counter">1</div>
+    <div class="step-name">Panier</div>
+  </div>
+  <div class="stepper-item completed">
+    <div class="step-counter">2</div>
+    <div class="step-name">Validation</div>
+  </div>
+  <div class="stepper-item ">
+    <div class="step-counter">3</div>
+    <div class="step-name">Confirmation</div> 
+  </div>
+  </div>
+ 
+
+    <div class="card bg-white px-5">
+        <div class="card-header">
+            <div class="jumbotron mb-1 bg-white ">
+                <h1 class="display-5"><b>Vous y etes presque</b></h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+              
+                <div class="col-md-5 ">
+                    <div class="card mt-0 border-0 first-card">
+                       <a href="{{ path('app_adresse_new') }}" class="btn btn-primary ">Nouvelle adresse</a> </br>
+                        <div class="card-body">
+                           
+                            
+
+                            <h5 class="card-title">Vos adresse de livraison</h5>
+                              
+                            
+                            <div class="row">
+                      
+                               {{ form_start(checkout)}}
+                            
+                              <div class="col"> {{ form_widget(checkout.adresse)  | replace({'[spr]' : '<br>'}) | raw }}</div>
+
                             </div>
-                            <a href="{{ path('app_adresse_new') }}" class="btn btn-primary btn-block mt-1">Nouvelle adresse</a>
-                    </div>
-                    <div class="heading_s1">
-                        <h4>Entreprises de livraison</h4>
-                        <div class="content">
-                            {{ form_widget(checkout.transporteurs)  | replace({'[spr]' : '<br>'}) | raw }}
                         </div>
                     </div>
+                     <div class="card mt-0 border-0 first-card">
+                        <!-- 1st Card -->
+                        <div class="card-body">
+                            <h5 class="card-title">Selectionner le mode de livraison</h5>
+                            <div class="row">
+                              <div class="col"> {{ form_widget(checkout.transporteur)  
+                              | replace({'[spr]' : '<br>'}) | raw }}</div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
                     
+                    <div class="card mt-2 border-0 second-card">
+                        <!-- Form -->
+                        {# <div class="card-body">
+                            <h5 class="card-title">Payer</h5>
+                            <div class="row">
+                                <div class="col-md-auto col-sm-auto ">
+                                    <div class="custom-control custom-radio custom-control-inline "> <input id="customRadioInline11" type="radio" name="customRadioInline11" class="custom-control-input" checked="true"> <label for="customRadioInline11" class="custom-control-label label-radio"><img src="https://img.icons8.com/color/48/000000/visa.png" class="card-image"> </label> </div>
+                                </div>
+                                <div class="col-md-auto col-sm">
+                                    <div class="custom-control custom-radio custom-control-inline "> <input id="customRadioInline22" type="radio" name="customRadioInline11" class="custom-control-input"> <label for="customRadioInline22" class="custom-control-label label-radio"><img src="https://img.icons8.com/officel/48/000000/discover.png" class="card-image"></label> </div>
+                                </div>
+                            </div> <!-- Payment Form -->
+                            <form method="get" action="">
+                                <div class="form-group "> <label for="cc-number" class="control-label mt-3">Card number</label> <input id="cc-number" name="cc-number" type="tel" placeholder="xxxx-xxxx-xxxx-xxxx" class="form-control form-control-lg cc-number identified visa " value="" data-val="true" data-val-required="Please enter the card number" data-val-cc-number="Please enter a valid card number" autocomplete="cc-number"> </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6"> <label for="cc-exp" class="control-label ">Expiration date</label> <input id="cc-exp" type="tel" class=" form-control form-control-lg cc-exp" autocomplete="cc-exp" placeholder="MM / YY" required> </div>
+                                    <div class="form-group col-md-6 col-sm-6"> <label for="cc-cvc" class="control-label ">CVV<span><i class="fa fa-info-circle px-2" aria-hidden="true"></i> </span> </label> <input id="cc-cvc" type="tel" class="form-control-lg form-control cc-cvc " autocomplete="off" placeholder="&bull;&bull;&bull;" required> </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8 col-sm-6"> <label for="inputState">State</label> <select id="inputState" class="form-control form-control-lg">
+                                            <option selected>United State</option>
+                                            <option>India</option>
+                                            <option>UK</option>
+                                            <option>China</option>
+                                        </select> </div>
+                                    <div class="form-group col-md-4 col-sm-6"> <label for="inputZip">Zip</label> <input type="text" class="form-control form-control-lg" id="inputZip" placeholder="111111"> </div>
+                                </div>
+                            </form>
+                        </div> #}
+                    </div>
                 </div>
-
+                <div class="col-1 d-none d-sm-block"></div> <!-- Right Half -->
                 <div class="col-md-6">
-                    <div class="order_review">
-                        <div class="heading_s1">
-                            <h4>Votre commande</h4>
+                    <div class="card right-card ">
+                        <div class="card-header ">
+                            <h3 class="font-weight"><b>Résumé de votre commande : </b></h3>
+                             <div class="row">
+    <div class="col">Prix de base : </div>
+    <div class="col-4">{{total}} €</div>
+    <div class="w-100"></div>
+    <div class="col">Frais de livraison : </div>
+     <div class="col-4"> </div> 
+    
+     <div class="w-100"> <hr></div>
+    <div class="col">Total :  </div>
+     <div class="col-4"> {{ form_widget(checkout) }}</div> 
+  </div>
                         </div>
-                        <div class="table-responsive order_table">
-                            
-                        </div>
-                        <div class="payment_method">
-                            <div class="heading_s1">
-                                <h4>Payment</h4>
-                            </div>
-                            
-                        </div>
-                        <button type="submit" id="checkout" class="btn btn-fill-out btn-block">Paiement</button>
+                        
+                        <div class="card-footer">
+                        <button type submit class="btn btn-primary btn-block mt-1">Valider</a>
+                        
+{% if checkout.vars.submitted  %}
+{% if checkout.vars.data.adresse  %}
+test
+{% endif %}
+{% endif %}
+                          {{ form_end(checkout)}}
+                    </div>
+                    <div class="card border-0">
+                        
                     </div>
                 </div>
             </div>
-           {{ form_end(checkout) }}
         </div>
     </div>
+</div>
 
 
 {% endblock %}

@@ -51,8 +51,17 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through"></span>
-                                    {{article.prix  ~'$'}}
+                              {% if article.promotion is not null  %}
+                                    <span class="text-dark text-decoration-line-through danger ">{{article.prix //100 }}€</span>
+                                    <div class= "position-absolute" style="top: 0.1rem;   text-align:left ; color:red">
+                                     <img src="{{asset('uploads/promo.png') }} " width="30%">
+                                      </div>
+                                   <span class="text-danger "> {{article.promotion //100 }}€</span>
+                                   {% elseif article.promotion is null %}
+                                   <span class="text-dark"> {{article.prix //100 }}€</span>
+                                  
+                                    {% endif %}
+                                    
                                 </div>
                             </div>
                             <!-- Product actions-->

@@ -50,6 +50,11 @@ height: 100%;
     {{ form_start(registrationForm) }}
 
 
+          <div class="form-outline mb-4">
+             {{ form_widget(registrationForm.name,{'attr': {'class': 'form-control form-control-lg'}}) }}
+            
+            <label class="form-label" for="form3Example3">nom utilisateur</label>
+          </div>
 
           <div class="form-outline mb-4">
              {{ form_widget(registrationForm.email,{'attr': {'class': 'form-control form-control-lg'}}) }}

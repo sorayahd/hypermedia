@@ -55,9 +55,9 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    <span class="text-dark text-decoration-line-through danger ">{{article.prix}}€</span>
+                                    <span class="text-dark text-decoration-line-through danger ">{{article.prix //100}}€</span>
                                      {% if article.promotion is not null  %}
-                                   <span class="text-danger "> {{article.promotion  ~' €'}}</span>
+                                   <span class="text-danger "> {{article.promotion //100  ~' €'}}</span>
                                     {% endif %}
                                 </div>
                             </div>

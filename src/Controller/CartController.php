@@ -28,6 +28,7 @@ class CartController extends AbstractController
                 'quantity'=> $quantity
                
             ];
+           // dd($panierWithData);
           
             if ($articleRepository->find($id)->getPromotion()> 0 )
             {
@@ -92,7 +93,7 @@ class CartController extends AbstractController
 
         $session->set('panier', $panier);
         //dd($session->get('panier'));
-        return $this->redirectToRoute("app_article_index");
+        return $this->redirectToRoute("app_cart");
     }
 
     #[Route('/cart/delete/{id}', name: 'delete_cart')]

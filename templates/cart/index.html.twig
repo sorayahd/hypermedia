@@ -14,10 +14,122 @@ background: white;
 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 background: white
 }
+
+.stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.stepper-item::before {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: -50%;
+  z-index: 2;
+}
+
+.stepper-item::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+}
+
+.stepper-item .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+
+.stepper-item.active {
+  font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+  background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #4bb543;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 3;
+}
+
+.stepper-item:first-child::before {
+  content: none;
+}
+.stepper-item:last-child::after {
+  content: none;
+}
+
+
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--body -->
 <div class="example-wrapper">
+
+
    <section class="h-100 gradient-custom">
+  
   <div class="container py-5">
+  <div class="stepper-wrapper">
+  <div class="stepper-item completed">
+    <div class="step-counter">1</div>
+    <div class="step-name">Panier</div>
+  </div>
+  <div class="stepper-item active">
+    <div class="step-counter">2</div>
+    <div class="step-name">Validation</div>
+  </div>
+  <div class="stepper-item active">
+    <div class="step-counter">3</div>
+    <div class="step-name">Confirmation</div>
+  </div>
+ 
+</div>
     <div class="row d-flex justify-content-center my-4">
       <div class="col-md-8">
         <div class="card mb-4">
@@ -46,13 +158,13 @@ background: white
                 <!-- Data -->
                 <p><strong>{{item.product.nom}}</strong></p>
                 <p>{% if item.product.promotion is not null  %}
-                                    <span class="text-dark text-decoration-line-through danger ">{{item.product.prix}}€</span>
+                                    <span class="text-dark text-decoration-line-through danger ">{{item.product.prix //100 }}€</span>
                                     
                                      
                                      
-                                   <span class="text-danger "> {{item.product.promotion}}€</span>
+                                   <span class="text-danger "> {{item.product.promotion //100 }}€</span>
                                    {% elseif item.product.promotion is null %}
-                                   <span class="text-dark"> {{item.product.prix}}€</span>
+                                   <span class="text-dark"> {{item.product.prix //100 }}€</span>
                                   
                                     {% endif %}
                                      </p>
@@ -96,9 +208,9 @@ background: white
                 <!-- Price -->
                 <p class="text-start text-md-center">
                 {% if item.product.promotion is not null %}
-                  <strong>Total: {{item.quantity * item.product.promotion}} €  </strong>
+                  <strong>Total: {{item.quantity * item.product.promotion //100 }} €  </strong>
                   {% elseif item.product.promotion is null %}
-                  <strong>Total: {{item.quantity * item.product.prix}} €  </strong>
+                  <strong>Total: {{item.quantity * item.product.prix //100 }} €  </strong>
                   {% endif %}
                  
                 </p>
@@ -159,7 +271,7 @@ background: white
                     <p class="mb-0">(including VAT)</p>
                   </strong>
                 </div>
-                <span><strong>{{total}} €</strong></span>
+                <span><strong>{{total //100 }} €</strong></span>
               </li>
             </ul>
          <a href="{{ path('checkout') }}" 
@@ -176,7 +288,8 @@ background: white
 </div>
  {% else %}
 
-<p> Votre panier est vide </p>
+<p> VOTRE PANIER NE COMPORTE AUCUN ARTICLE .
+Enregistrer votre sélection d'articles.</p>
 {% endif %}
             
 {% endblock %}

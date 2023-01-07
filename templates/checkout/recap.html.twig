@@ -1,0 +1,260 @@
+{% extends 'index.html.twig' %}
+{% block title %}Recapitulation commande WEAR IT {% endblock %}
+
+{% block body %}
+
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+body{background-color: #eee;font-family: "Poppins", sans-serif;font-weight: 300}.cart{height: 100vh}.
+progresses{display: flex;align-items: center}.line{width: 76px;height: 6px;background: #63d19e}.
+steps{display: flex;background-color: #63d19e;color: #fff;font-size: 12px;width: 30px;height:
+ 30px;align-items: center;justify-content: center;border-radius: 50%}.check1{display: flex;background-color: 
+ #63d19e;color: #fff;font-size: 17px;width: 60px;height: 60px;align-items: center;justify-content: center;border-radius:
+ 50%;margin-bottom: 10px}.invoice-link{font-size: 15px}.order-button{height: 50px}.background-muted{background-color:#fafafc}
+
+
+.container {
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.cc-number.identified {
+    background-repeat: no-repeat;
+    background-position-y: 11px;
+    background-position-x: 99%
+}
+
+.right-card {
+    border-top: 10px blue solid;
+    padding-top: 1rem;
+    width: fit-content
+}
+
+.btn-group-lg>.btn,
+.btn-lg {
+    width: -webkit-fill-available
+}
+
+li.borderless {
+    border-top: 0 none !important;
+    font-size: 15px;
+    padding: 0;
+    padding-top: 5%
+}
+
+.fa-check {
+    color: rgb(0, 195, 255)
+}
+
+.card,
+.card-header,
+.card-footer {
+    background-color: white !important
+}
+
+.card-header {
+    border-bottom: none
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+.second-card,
+.first-card {
+    border-top: 1px solid #ccc !important;
+    padding-top: 2rem
+}
+
+.card-image {
+    width: 45px;
+    margin-top: -9px
+}
+
+@media (max-width: 1000px) {
+    .card {
+        padding: 0 !important
+    }
+}
+
+.stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.stepper-item::before {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: -50%;
+  z-index: 2;
+}
+
+.stepper-item::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+}
+
+.stepper-item .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+
+.stepper-item.active {
+  font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+  background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #4bb543;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 3;
+}
+
+.stepper-item:first-child::before {
+  content: none;
+}
+.stepper-item:last-child::after {
+  content: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+<div class="container mt-4 mb-4">
+    <div class="row d-flex cart align-items-center justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                
+                  
+                           <div class="stepper-wrapper">
+  <div class="stepper-item completed">
+    <div class="step-counter">1</div>
+    <div class="step-name">Panier</div>
+  </div>
+  <div class="stepper-item completed">
+    <div class="step-counter">2</div>
+    <div class="step-name">Validation</div>
+  </div>
+  <div class="stepper-item completed">
+    <div class="step-counter">3</div>
+    <div class="step-name">Confirmation</div> 
+  </div>
+  {# <div class="stepper-item">
+    <div class="step-counter">4</div>
+    <div class="step-name">Forth</div>
+  </div> #}
+ </div>
+
+                        
+                  
+           
+                <div class="row g-0">
+                   
+                        <div class="text-center order-details">
+                            <div class="d-flex justify-content-center mb-5 flex-column align-items-center"> <span class="check1">
+                            <i class="fa fa-check"></i></span> <span class="font-weight-bold">Commande confirmé</span> 
+                            <small class="mt-2">vous allez recevoir votre livraison prochainement</small>
+                             <a href="#" class="text-decoration-none invoice-link">View Invoice</a>
+                              </div>  <a href="{{ path('app_panier_index') }}" class="btn btn-primary ">Retourner à mes commandes</a> 
+                        </div>
+                
+                   
+                        <div class="p-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center"> 
+                            </div>
+                            <div class="mt-3">  
+                               
+                            </div>
+                        </div>
+                        <div class="row g-0 border-bottom">
+                            <div class="col-md-6 border-right">
+                              
+                            </div>
+                            <div class="col-md-6">
+                               
+                            </div>
+                        </div>
+                        <div class="row g-0 border-bottom">
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6">
+                               
+                            </div>
+                        </div>
+                        <div class="row g-0 border-bottom">
+                            <div class="col-md-6">
+                              
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                               
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                    
+                </div>
+                <div> </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

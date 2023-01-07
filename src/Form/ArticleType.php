@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Genre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -17,13 +18,9 @@ class ArticleType extends AbstractType
             ->add('nom')
             ->add('description')
             ->add('prix')
-            ->add('genre',ChoiceType::class,[
-
-                'choices'=>[
-                    'Femme'=>'Femme',
-                    'Homme'=>'Homme',
-
-                ],
+            ->add('genre',EntityType::class, [
+                'required' => true,
+                'class' => Genre::class,
             ])
             ->add('image',FileType::class, [
                 'label' => 'Image',

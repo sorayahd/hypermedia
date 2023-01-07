@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AdresseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
@@ -30,6 +32,14 @@ class Adresse
 
     #[ORM\ManyToOne(inversedBy: 'adresses')]
     private ? User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'adresse', targetEntity: Cart::class)]
+    private Collection $carts;
+
+    public function __construct()
+    {
+        $this->carts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,4 +131,35 @@ class Adresse
         return $result;
     }
 
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setAdresse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getAdresse() === $this) {
+                $cart->setAdresse(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }

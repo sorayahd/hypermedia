@@ -18,15 +18,13 @@ class CategorieArticle
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nome = null;
 
-    #[ORM\OneToMany(mappedBy: 'Categorie', targetEntity: SousCategorieArticle::class)]
-    private Collection $sousCategorieArticles;
-
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Article::class)]
     private Collection $articles;
 
+    
+
     public function __construct()
     {
-        $this->sousCategorieArticles = new ArrayCollection();
         $this->articles = new ArrayCollection();
     }
 
@@ -47,35 +45,8 @@ class CategorieArticle
         return $this;
     }
 
-    /**
-     * @return Collection<int, SousCategorieArticle>
-     */
-    public function getSousCategorieArticles(): Collection
-    {
-        return $this->sousCategorieArticles;
-    }
-
-    public function addSousCategorieArticle(SousCategorieArticle $sousCategorieArticle): self
-    {
-        if (!$this->sousCategorieArticles->contains($sousCategorieArticle)) {
-            $this->sousCategorieArticles->add($sousCategorieArticle);
-            $sousCategorieArticle->setCategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSousCategorieArticle(SousCategorieArticle $sousCategorieArticle): self
-    {
-        if ($this->sousCategorieArticles->removeElement($sousCategorieArticle)) {
-            // set the owning side to null (unless already changed)
-            if ($sousCategorieArticle->getCategorie() === $this) {
-                $sousCategorieArticle->setCategorie(null);
-            }
-        }
-
-        return $this;
-    }
+   
+   
     public function __toString()
     {
         return $this->nome;
@@ -110,4 +81,6 @@ class CategorieArticle
 
         return $this;
     }
+
+    
 }

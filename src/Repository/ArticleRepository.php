@@ -51,6 +51,18 @@ class ArticleRepository extends ServiceEntityRepository
            ;
        }
 
+
+
+       public function findArray($array)
+       {
+           $qb = $this->createQueryBuilder('u')
+                   ->select('u')
+                   ->where('u.id IN (:array)')
+                   ->setParameter('array', $array);  
+           return $qb->getQuery()->getResult();      
+       }
+       
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
