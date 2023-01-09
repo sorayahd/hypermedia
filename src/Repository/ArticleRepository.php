@@ -63,6 +63,73 @@ class ArticleRepository extends ServiceEntityRepository
        }
        
 
+       public function findSame($categorie,$id)
+       {
+      
+        return $this->createQueryBuilder('a')
+        ->andWhere('a.categorie = :categorie')
+        ->setParameter('categorie', $categorie)
+        ->andWhere('a.id NOT IN (:id)')
+       
+        ->setParameter('id',$id)
+        
+        //->orderBy('rand()')
+        // ->setMaxResults(5)
+        ->getQuery()
+
+        ->getResult()
+    ;
+       }
+       
+       
+
+
+
+
+
+
+
+
+
+
+       public function findOneRandomBy($criteria = [])
+       {
+           $qb = $this->createQueryBuilder('entity')
+               ->select('MIN(entity.id)', 'MAX(entity.id)')
+           ;
+   
+           foreach ($criteria as $field => $value) {
+               $qb
+                   ->andWhere(sprintf('entity.%s=:%s', $field, $field))
+                   ->setParameter(':'.$field, $value);
+               ;
+           }
+   
+           $id_limits = $qb
+               ->getQuery()
+               ->getOneOrNullResult();
+           $random_possible_id = rand($id_limits[1], $id_limits[2]);
+   
+           return $qb
+               ->select('entity')
+               ->andWhere('entity.id >= :random_id')
+               ->setParameter('random_id', $random_possible_id)
+               ->setMaxResults(1)
+               ->getQuery()
+               ->getOneOrNullResult()
+               ;
+       }
+
+
+
+
+
+
+
+
+
+
+       
        public function findArticle($motcle)
        {
            $query = $this->createQueryBuilder('f')
@@ -73,6 +140,12 @@ class ArticleRepository extends ServiceEntityRepository
    
            return $query->getResult();
        }
+
+
+
+
+   
+
 
 //    /**
 //     * @return Article[] Returns an array of Article objects

@@ -5,10 +5,13 @@ namespace App\Controller;
 
 
 use App\Entity\Article;
+use App\Entity\ArticleSearch;
 use App\Entity\User;
 use App\Form\Article1Type;
+use App\Form\ArticleSearchType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieArticleRepository;
+use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FileUploadError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -58,11 +61,25 @@ class ArticleController extends AbstractController
             
         // }
         $motcle = $request->get('recherche');
-        $articleRepository = $articleRepository->findArticle($motcle);
+        $article = $articleRepository->findArticle($motcle);
+        //$article = $articleRepository->findAll();
+        $ArticleRecherche = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class, $ArticleRecherche);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = [];
+       
+            $minPrice = $ArticleRecherche->getminPrix();
+            $maxPrice = $ArticleRecherche->getmaxPrix();
 
+            $article = $articleRepository->findByPrice($minPrice, $maxPrice);
+               
+        }
 
         return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository,
+            'articles' => $article,
+            'form' =>$form->createView()
             // 'items'=>$panierWithData,
             // 'total'=>$total,
             // 'quantity'=>$quantityTotal
@@ -104,7 +121,6 @@ class ArticleController extends AbstractController
             }
 
 
-             
 
             $articleRepository->save($article, true);
 
@@ -121,12 +137,39 @@ class ArticleController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
-    public function show(Article $article): Response
+    public function show(Article $article,ArticleRepository $articleRepository,Connection $connection): Response
     {
+
+        $sql = "SELECT * FROM Article ORDER BY RAND();";
+        $data = $connection->fetchAllAssociative($sql);
+
+
+        $articleCat = $article->getCategorie()->getId();
+        $randomi = array();
+        $ArticleSame = $articleRepository->findSame(['categorie' => $articleCat],$article->getId());
+        for($i = 0 ; $i < count($ArticleSame ); $i++) {
+            $randomi[$i] = $ArticleSame;
+        }
+        shuffle($randomi);
+        
+
+        // dd($randomi);
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'articleSame' =>$ArticleSame
         ]);
     }
+
+ 
+
+
+
+
+
+
+
+
+
 
     
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
@@ -160,24 +203,39 @@ class ArticleController extends AbstractController
  //----------------------------ARTICLE PAR GENRE----------------------
 
     /**
-     * @Route("/genre/homme", name="app_article_homme_show")
-     * 
+     * @Route("/genre/homme", name="app_article_homme_show" ) 
      */
 
-    public function ArticleHomme( ArticleRepository $repository ): Response
+    public function ArticleHomme( ArticleRepository $articleRepository ,Request $request): Response
     {
 
-        $articles =$repository->findBy(['sexe' => 1]);
-      
+        $article = $articleRepository->findBy(['sexe' => 1]);
+        $ArticleRecherche = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class, $ArticleRecherche);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = [];
+       
+            $minPrice = $ArticleRecherche->getminPrix();
+            $maxPrice = $ArticleRecherche->getmaxPrix();
+
+            $article = $articleRepository->findByPrice($minPrice, $maxPrice);
+               
+        }
+
         return $this->render('article/ArticleHomme.html.twig', [
-            'articles' => $articles,
-            
+            'articles' => $article,
+            'form' =>$form->createView()
+            // 'items'=>$panierWithData,
+            // 'total'=>$total,
+            // 'quantity'=>$quantityTotal
         ]);
        
     }
 
      /**
-     * @Route("/genre/femme", name="app_article_femme_show")
+     * @Route("/genre/femme", name="app_article_femme_show" )
      * 
      */
 
@@ -376,8 +434,28 @@ class ArticleController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/recherche/index", name="app_recherche")
+     */
+    public function rechercheAvancé(Request $request,ArticleRepository $articleRepository): Response
+    {
+        
+        $ArticleRecherche = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class, $ArticleRecherche);
+        $form->handleRequest($request);
+        $article = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $minPrice = $ArticleRecherche->getminPrix();
+            $maxPrice = $ArticleRecherche->getmaxPrix();
 
-
+            $article = $articleRepository->findByPrice($minPrice, $maxPrice);
+               
+        }
+        return  $this->render('article/index.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article
+        ]);
+    }
 
 
 

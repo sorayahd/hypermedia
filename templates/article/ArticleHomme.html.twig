@@ -4,6 +4,19 @@
   <!-- Section-->
         <section class="test">
             <div class="container px-4 px-lg-5 mt-5">
+              <div class="container px-4 px-lg-5 mt-5">
+ <button class="btn"  onclick="myFunction()"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
+ 
+
+<div id="myDIV" style="display:none">  
+{{ form_start(form)}}
+{{form_row(form.minPrix)}}
+{{form_row(form.maxPrix)}}
+
+<button type="submit" class="btn btn-success">Filtrer</button>
+
+{{form_end(form)}}
+</div>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     {% for article in articles %}
                     
@@ -87,7 +100,18 @@
 
 
 
-   
+      {% block javascripts %}
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+{% endblock %}
 
    
 {% endblock %}
