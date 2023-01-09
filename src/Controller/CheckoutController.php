@@ -36,7 +36,7 @@ class CheckoutController extends AbstractController
      */
 
     public function new (
-        Request $request, CartRepository $cartRepository, SessionInterface $session,
+        Request $request,SessionInterface $session,
         ArticleRepository $articleRepository, ManagerRegistry $doctrine
     ): Response
     {
@@ -141,13 +141,20 @@ class CheckoutController extends AbstractController
     }
 
     /**
-     * @Route("/OrderDetails", name="OrderDetails")
+     * @Route("/OrderDetails/{id}", name="OrderDetails")
      */
-    public function indexAction(ManagerRegistry $doctrine,CartDetailsRepository $cartRepository) {
+    // public function indexAction(ManagerRegistry $doctrine,CartRepository $cartRepository,$id) {
 
-        $em = $doctrine->getManager();
+    //     $em = $doctrine->getManager();
+    //     return $this->render('panier/show.html.twig', [
+    //         'carts' => $cartRepository->findOneBy(),
+    //     ]);
+    // }
+    #[Route('/OrderDetails/{id}', name: 'OrderDetails_show', methods: ['GET'])]
+    public function show(Cart $cart): Response
+    {
         return $this->render('panier/show.html.twig', [
-            'carts' => $cartRepository->findAll(),
+            'carts' => $cart,
         ]);
     }
     

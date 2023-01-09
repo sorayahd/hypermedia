@@ -4,13 +4,17 @@
 
 
 {% block body %}
+</body>
+<div class="page-wrap">
 
   <!-- Section-->
-        <section class="py-5">
+        <section class="test">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+ 
+                  
                     {% for favoris in app.user.favoris %}
-                    
+                
                     <div class="col mb-5">
                         <div class="card h-100">
                             {% if is_granted("ROLE_USER") %}
@@ -70,6 +74,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     {% endfor %}
                   
 
@@ -81,8 +86,8 @@
 
 
 
-
-
+</div>
+</body>
    
 
    

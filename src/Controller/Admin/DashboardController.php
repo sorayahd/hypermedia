@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\CategorieArticle;
 use App\Entity\Genre;
+use App\Entity\Taille;
+use App\Entity\TailleArticle;
 use App\Entity\User;
 use App\Entity\Transporteur;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -36,7 +38,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Articles', 'fas fa-shopping-cart', Article::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', CategorieArticle::class);
         yield MenuItem::linkToCrud('Genres', 'fas fa-list', Genre::class);
+        yield MenuItem::linkToCrud('Taille', 'fas fa-list', Taille::class);
         yield MenuItem::linkToCrud('utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Transporteur', 'fas fa-user', Transporteur::class);
+        yield MenuItem::linkToRoute('Articles avec leurs taille', 'fas fa-shopping-cart', 'app_taille_article_index');
     }
 }

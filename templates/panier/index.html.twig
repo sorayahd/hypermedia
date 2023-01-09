@@ -52,7 +52,8 @@ th {
             <td width="20%"> {{ cart.Transporteur | replace({'[spr]' : '<br>'}) | raw}}</td>
             <td  width="20%"> En Cours </td>
             <td  width="20%" > {{ cart.Total}} €</td>
-             <td  width="20%" > <a href="{{ path('app_panier_show', {'id': cart.id})}}" class="btn btn-primary" type="button" style="background-color:green">
+             <td  width="20%" > <a href="{{ path('OrderDetails_show', {'id': cart.id})}}"
+              class="btn btn-primary" type="button" style="background-color:green">
              <i class="fa fa-eye" aria-hidden="true"></i>
             </a></td>
           </div>

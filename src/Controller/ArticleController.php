@@ -33,8 +33,8 @@ class ArticleController extends AbstractController
         ]);
     }
     
-    #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,SessionInterface $session): Response
+    #[Route('/', name: 'app_article_index', methods: ['GET', 'POST'])]
+    public function index(ArticleRepository $articleRepository,SessionInterface $session,Request $request): Response
     {
 
 
@@ -57,9 +57,12 @@ class ArticleController extends AbstractController
         //     $quantityTotal += $quantity;
             
         // }
-      
+        $motcle = $request->get('recherche');
+        $articleRepository = $articleRepository->findArticle($motcle);
+
+
         return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            'articles' => $articleRepository,
             // 'items'=>$panierWithData,
             // 'total'=>$total,
             // 'quantity'=>$quantityTotal

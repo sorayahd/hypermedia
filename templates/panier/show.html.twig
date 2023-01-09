@@ -1,29 +1,52 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}Details de la commande {% endblock %}
 
 {% block body %}
-<div class="container">
-   <table class="table align-middle mb-0 bg-white">
+<div class="page-wrap">
+<div class="container mt-5">
+<table class="table align-middle mb-0 bg-white">
   <thead class="bg-light">
     <tr>
-      <th>Article</th>
-      <th>Quantity</th>
-      <th>Prix</th>
-   
+     <th>Article</th>
+       <th>Prix Unitaire</th>
+      <th>Quantité</th>
+      <th>Prix Total</th>
     </tr>
-    {% for cart in app.user.carts %}
-     {{cart.nbArticle }}
-    {% endfor %}
   </thead>
   <tbody>
-
-   <tr>
-        <div class="d-flex align-items-center " >
+  {% for  cartDetails in carts.getCartDetails() %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
          
-          
+         <img src="{{asset('uploads/article/'~ cartDetails.getArticles().image) }} "
+              style="width: 100px; height: 120px"
+           
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1"> {{cartDetails.getArticles().getNom() }}</p>
+            
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1"> {{cartDetails.getArticles().Prix() }}€</p>
+        <p class="text-muted mb-0"></p>
+      </td>
+      <td>
+        <p class="fw-normal mb-1">{{cartDetails.Quantity }}</p>
+        <p class="text-muted mb-0"></p>
+      </td>
+      <td>
+        {{cartDetails.price }} €
+      </td>
+    
      
+    </tr>
+   
+     {% endfor %}
   </tbody>
 </table>
+</div>
 </div>
 {% endblock %}

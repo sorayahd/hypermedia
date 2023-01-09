@@ -1,0 +1,101 @@
+{# {% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}Taille desArticle index{% endblock %}
+
+
+
+{% block content_title %}Administration{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="{{ path('app_taille_article_new') }}"> Ajouter</a>
+{% endblock %}
+
+{% block main %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for taille_article in taille_articles %}
+            <tr>
+                <td>
+                    <a href="{{ path('app_taille_article_show', {'articls': taille_article.articls}) }}">show</a>
+                    <a href="{{ path('app_taille_article_edit', {'articls': taille_article.articls}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="1">Aucune données disponible </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %} #}
+
+
+{# templates/admin/my-custom-page.html.twig #}
+
+
+
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}Taille disponible{% endblock %}
+
+
+
+{% block content_title %}Administration{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="{{ path('app_taille_article_new') }}"> Ajouter</a>
+{% endblock %}
+
+{% block main %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Article</th>
+                 <th>Taille </th>
+                 <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for taille_article in taille_articles %}
+        
+            <tr>
+                <td>
+
+                <img src="{{asset('uploads/article/'~ taille_article.articls.image) }} "
+              style="width: 100px; height: 120px"
+           
+              />
+            
+              </td>
+                
+                             
+                <td> {{ taille_article.taille.getTaille()}}</td>
+                 <td> <a href="{{ path('app_taille_article_edit', {'articls': taille_article.articls}) }}">Modifier</a>
+                 <a href="{{ path('app_taille_article_delete', {'articls': taille_article.articls}) }}">Supprimer</a>
+                 </td>
+            </tr>
+           
+        {% else %}
+            <tr>
+                <td colspan="1">Aucune données disponible </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+{# templates/admin/my-custom-page.html.twig #}
+
+
+

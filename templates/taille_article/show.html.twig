@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TailleArticle{% endblock %}
+
+{% block body %}
+    <h1>TailleArticle</h1>
+
+    <table class="table">
+        <tbody>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_taille_article_index') }}">back to list</a>
+
+    <a href="{{ path('app_taille_article_edit', {'articls': taille_article.articls}) }}">edit</a>
+
+    {{ include('taille_article/_delete_form.html.twig') }}
+{% endblock %}

@@ -31,6 +31,7 @@ class ArticleCrudController extends AbstractCrudController
             TextEditorField::new('description'),
             AssociationField::new('categorie'),
             AssociationField::new('sexe'),
+            // AssociationField::new('taille'),
             ImageField::new('image')->setBasePath('uploads/article/')
                                     ->setUploadDir('public/uploads/article/')
                                     ->setUploadedFileNamePattern('[randomhash].[extension]')

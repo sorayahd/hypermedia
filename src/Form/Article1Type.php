@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\CategorieArticle;
+use App\Entity\Taille;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -34,6 +35,17 @@ class Article1Type extends AbstractType
                 ],
                 
             ])
+
+            // ->add('taille',Taille::class,[
+
+            //     // 'choices'=>[
+            //     //     'Femme'=>'Femme',
+            //     //     'Homme'=>'Homme',
+                    
+
+            //     // ],
+                
+            // ])
             ->add('image',FileType::class, [
                 'label' => 'Image',
 

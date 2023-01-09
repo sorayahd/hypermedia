@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+
+
 class Article
 {
     #[ORM\Id]
@@ -52,11 +54,20 @@ class Article
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: CartDetails::class)]
     private Collection $cartDetails;
 
+    #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'articlesTaille')]
+    private Collection $taille;
+
+    #[ORM\OneToMany(mappedBy: 'articls', targetEntity: TailleArticle::class)]
+    private Collection $tailleArticles;
+
+
 
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
         $this->cartDetails = new ArrayCollection();
+        $this->taille = new ArrayCollection();
+        $this->tailleArticles = new ArrayCollection();
 
         
     }
@@ -258,5 +269,61 @@ class Article
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Taille>
+     */
+    public function getTaille(): Collection
+    {
+        return $this->taille;
+    }
+
+    public function addTaille(Taille $taille): self
+    {
+        if (!$this->taille->contains($taille)) {
+            $this->taille->add($taille);
+        }
+
+        return $this;
+    }
+
+    public function removeTaille(Taille $taille): self
+    {
+        $this->taille->removeElement($taille);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TailleArticle>
+     */
+    public function getTailleArticles(): Collection
+    {
+        return $this->tailleArticles;
+    }
+
+    public function addTailleArticle(TailleArticle $tailleArticle): self
+    {
+        if (!$this->tailleArticles->contains($tailleArticle)) {
+            $this->tailleArticles->add($tailleArticle);
+            $tailleArticle->setArticls($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTailleArticle(TailleArticle $tailleArticle): self
+    {
+        if ($this->tailleArticles->removeElement($tailleArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleArticle->getArticls() === $this) {
+                $tailleArticle->setArticls(null);
+            }
+        }
+
+        return $this;
+    }
+
+  
    
 }

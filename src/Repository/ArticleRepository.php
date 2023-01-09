@@ -63,6 +63,17 @@ class ArticleRepository extends ServiceEntityRepository
        }
        
 
+       public function findArticle($motcle)
+       {
+           $query = $this->createQueryBuilder('f')
+               ->where('f.nom like :nom ')
+               ->setParameter('nom', '%' . $motcle . '%')
+               ->orderBy('f.nom', 'ASC')
+               ->getQuery();
+   
+           return $query->getResult();
+       }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */

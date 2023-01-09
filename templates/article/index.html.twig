@@ -1,8 +1,8 @@
 {% extends 'index.html.twig' %}
 {% block body %}
-
-  <!-- Section-->
-        <section class="py-5">
+<body>
+<div class="page-wrap">
+        <section class="test">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     {% for article in articles %}
@@ -12,8 +12,7 @@
                             <!-- Sale badge-->
                             <div class= "position-absolute" style="top: 0.5rem; right: 0.5rem; color:red">
                             
-                            
-
+                       
                              {% if is_granted("ROLE_USER") %}
                             {% set isFavorite = false %}
 							{% for favoris in article.favoris %}
@@ -68,7 +67,7 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" href=" {{ path ('add_cart',{'id':article.id}) }}}">Ajouter au panier</a></div>
+                                <a class="btn btn-outline-dark mt-auto" href=" {{ path ('app_article_show',{'id':article.id}) }}}">Ajouter au panier</a></div>
                             </div>
                         </div>
                     </div>
@@ -83,8 +82,8 @@
                 </div>
             </div>
 
-
-
+</div>
+</body>
 
 
 
