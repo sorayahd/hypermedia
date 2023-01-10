@@ -72,8 +72,8 @@ class ArticleRepository extends ServiceEntityRepository
         ->andWhere('a.id NOT IN (:id)')
        
         ->setParameter('id',$id)
-        
-        //->orderBy('rand()')
+       
+        //->orderBy('RAND()')
         // ->setMaxResults(5)
         ->getQuery()
 
@@ -92,33 +92,7 @@ class ArticleRepository extends ServiceEntityRepository
 
 
 
-       public function findOneRandomBy($criteria = [])
-       {
-           $qb = $this->createQueryBuilder('entity')
-               ->select('MIN(entity.id)', 'MAX(entity.id)')
-           ;
-   
-           foreach ($criteria as $field => $value) {
-               $qb
-                   ->andWhere(sprintf('entity.%s=:%s', $field, $field))
-                   ->setParameter(':'.$field, $value);
-               ;
-           }
-   
-           $id_limits = $qb
-               ->getQuery()
-               ->getOneOrNullResult();
-           $random_possible_id = rand($id_limits[1], $id_limits[2]);
-   
-           return $qb
-               ->select('entity')
-               ->andWhere('entity.id >= :random_id')
-               ->setParameter('random_id', $random_possible_id)
-               ->setMaxResults(1)
-               ->getQuery()
-               ->getOneOrNullResult()
-               ;
-       }
+
 
 
 

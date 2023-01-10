@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Entity\Cart;
 use App\Entity\CategorieArticle;
 use App\Entity\Genre;
+use App\Entity\StatusCommande;
 use App\Entity\Taille;
 use App\Entity\TailleArticle;
 use App\Entity\User;
@@ -41,6 +43,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Taille', 'fas fa-list', Taille::class);
         yield MenuItem::linkToCrud('utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Transporteur', 'fas fa-user', Transporteur::class);
+        yield MenuItem::linkToCrud('Status', 'fas fa-user', StatusCommande::class);
         yield MenuItem::linkToRoute('Articles avec leurs taille', 'fas fa-shopping-cart', 'app_taille_article_index');
+        yield MenuItem::linkToCrud('Commande', 'fas fa-user', Cart::class);
     }
 }

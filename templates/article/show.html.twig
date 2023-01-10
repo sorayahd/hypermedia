@@ -65,9 +65,11 @@ transform: scale(1.5);
                 <div class="row">
                     <div class="col-md-6">
                         <div class="images p-3">
-                            <div class="text-center p-4"> <img id="main-image" src="{{asset('uploads/article/'~ article.image) }}"  height="300px" /> </div>
+                            <div class="text-center p-4"> <img id="main-image"
+                             src="{{asset('uploads/article/'~ article.image) }}"  height="300px" /> </div>
                             <div class="thumbnail text-center">
-                             <img onclick="change_image(this)"src="{{asset('uploads/article/'~ article.image) }}" width="70"> </div>
+                             <img onclick="change_image(this)"src="{{asset('uploads/article/'~ article.image) }}" 
+                             width="70"> </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -76,9 +78,19 @@ transform: scale(1.5);
                                 <div class="d-flex align-items-center">
                                 <button onclick="history.go(-1)">Retourner</button>
  
-                                <span class="ml-1"></span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                                <span class="ml-1"></span> </div> <i class="fa fa-shopping-cart text-muted"> </i>
                             </div>
-                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand"></span>
+
+
+
+
+
+
+
+
+
+                            
+                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand"> </span>
                                 <h5 class="text-uppercase">{{article.nom}}</h5>
                                 {% if article.promotion is not null  %}
                                 <div class="price d-flex flex-row align-items-center"> <span class="act-price">
@@ -106,11 +118,53 @@ transform: scale(1.5);
                                   <label class="radio"> <input type="radio" name="size" value="XXL"> <span>XXL</span> </label> #}
                             </div>
                             <div class="cart mt-4 align-items-center"><a class="btn btn-danger text-uppercase mr-2 px-4" 
-                             href=" {{ path ('add_cart',{'id':article.id}) }}}"
-                            >Ajouter au panier</a>  
-                             <a href= "{{ path ('app_ajout_favoris',{'id':article.id}) }}}" <i class="fa fa-heart text-muted"></i>
-                             </a>
-                       
+                             href=" {{ path ('add_cart',{'id':article.id}) }}}">Ajouter au panier</a> 
+                              
+                            
+                           
+                                         {% if is_granted("ROLE_USER") %}
+                            {% set isFavorite = false %}
+							{% for favoris in article.favoris %}
+								{% if favoris.id == app.user.id %}
+                                    {% set isFavorite = true %}
+								{% endif %}    
+							{% endfor %}
+                            {% if isFavorite %}
+								<a href="{{ path('app_retrait_favoris', {id: article.id}) }}">
+                                <i class="fas fa-heart" style="color:red" ></i></a>
+                            {% else %}
+								<a href="{{ path('app_ajout_favoris',
+                                 {id: article.id}) }}"><i class="far fa-heart" style="color:red"></i></a>
+                            {% endif %}
+
+						   {% else %}
+							<i class="far fa-heart" style="color:red"></i>
+						{% endif %}
+                      
+
+                       <a href="{{ path('app_like', {id: article.id}) }}">
+
+                       {% if app.user and article.isLikedByUser(app.user) %}
+ 
+                        <i class="fas fa-thumbs-up "
+                         aria-hidden="true" style="font-size: 15pt"></i><a/>
+                        {{article.likes | length }}
+                            </div>
+                        {% else  %}
+
+                         <i class="far fa-thumbs-up "
+                         aria-hidden="true" style="font-size: 15pt;"></i><a/>
+                         {{article.likes | length }}
+                        
+                            </div>
+                         {% endif %}
+
+
+
+
+
+
+                      
                              </div>
                         </div>
                     </div>
@@ -189,7 +243,9 @@ transform: scale(1.5);
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" href=" {{ path ('app_article_show',{'id':articles.id}) }}}">Ajouter au panier</a></div>
+                                <a class="btn btn-outline-dark mt-auto"
+                                 href=" {{ path ('app_article_show',{'id':articles.id}) }}}">Ajouter au panier</a>
+                                 </div>
                             </div>
                         </div>
                     </div>

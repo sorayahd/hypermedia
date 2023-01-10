@@ -35,21 +35,21 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $promotion = null;
 
-  
+
 
     // #[ORM\ManyToOne(inversedBy: 'articles')]
-  
+
 
     // #[ORM\Column(length: 255)]
     // private ?string $genre = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CategorieArticle $categorie = null;
+    private ? CategorieArticle $categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'Articles')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Genre $sexe = null;
+    private ? Genre $sexe = null;
 
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: CartDetails::class)]
     private Collection $cartDetails;
@@ -60,6 +60,13 @@ class Article
     #[ORM\OneToMany(mappedBy: 'articls', targetEntity: TailleArticle::class)]
     private Collection $tailleArticles;
 
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleLike::class)]
+    private Collection $Likes;
+
+    #[ORM\Column(nullable: true)]
+    
+    private ?int $nombreAchat = null;
+
 
 
     public function __construct()
@@ -68,8 +75,9 @@ class Article
         $this->cartDetails = new ArrayCollection();
         $this->taille = new ArrayCollection();
         $this->tailleArticles = new ArrayCollection();
+        $this->Likes = new ArrayCollection();
 
-        
+
     }
 
     public function getId(): ?int
@@ -162,7 +170,7 @@ class Article
     }
 
 
-   
+
 
     // /**
     //  * @return Collection<int, ArticlePanier>
@@ -194,10 +202,10 @@ class Article
     //     return $this;
     // }
 
-   
-  
 
-   
+
+
+
 
     // public function getGenre(): ?string
     // {
@@ -211,12 +219,12 @@ class Article
     //     return $this;
     // }
 
-    public function getCategorie(): ?CategorieArticle
+    public function getCategorie(): ? CategorieArticle
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?CategorieArticle $categorie): self
+    public function setCategorie(? CategorieArticle $categorie): self
     {
         $this->categorie = $categorie;
 
@@ -228,12 +236,12 @@ class Article
         return $this->nom;
     }
 
-    public function getSexe(): ?Genre
+    public function getSexe(): ? Genre
     {
         return $this->sexe;
     }
 
-    public function setSexe(?Genre $sexe): self
+    public function setSexe(? Genre $sexe): self
     {
         $this->sexe = $sexe;
 
@@ -324,6 +332,60 @@ class Article
         return $this;
     }
 
-  
-   
+    /**
+     * @return Collection<int, ArticleLike>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->Likes;
+    }
+
+    public function addLike(ArticleLike $like): self
+    {
+        if (!$this->Likes->contains($like)) {
+            $this->Likes->add($like);
+            $like->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(ArticleLike $like): self
+    {
+        if ($this->Likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getArticle() === $this) {
+                $like->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * Summary of isLikedByUser
+     * @param User $user
+     * @return bool
+     */
+    public function isLikedByUser(User $user): bool
+    {
+        foreach ($this->Likes as $like) {
+            if ($like->getUser() == $user)
+
+                return true;
+
+        }
+        return false;
+    }
+
+    public function getNombreAchat(): ?int
+    {
+        return $this->nombreAchat;
+    }
+
+    public function setNombreAchat(?int $nombreAchat): self
+    {
+        $this->nombreAchat = $nombreAchat;
+
+        return $this;
+    }
 }

@@ -6,11 +6,14 @@ use App\Entity\Article;
 use App\Entity\Cart;
 use App\Entity\CartDetail;
 use App\Entity\CartDetails;
+use App\Entity\StatusCommande;
 use App\Entity\User;
 use App\Form\CheckoutType;
 use App\Repository\ArticleRepository;
 use App\Repository\CartDetailsRepository;
 use App\Repository\CartRepository;
+use App\Repository\StatusCommandeRepository;
+use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,8 +40,8 @@ class CheckoutController extends AbstractController
 
     public function new (
         Request $request,SessionInterface $session,
-        ArticleRepository $articleRepository, ManagerRegistry $doctrine
-    ): Response
+        ArticleRepository $articleRepository, ManagerRegistry $doctrine,
+        StatusCommandeRepository $statusRepo,CartDetailsRepository $cartDetailsRepository): Response
     {
 
         $panier = $session->get('panier', []);
@@ -75,12 +78,15 @@ class CheckoutController extends AbstractController
         $em = $doctrine->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
+            $status= $statusRepo->find('1');
             $reference = $this->generateUuid();
             $data = $form->getData();
             $address = $data['adresse'];
             $transporteur = $data['transporteur'];
             $prix = $transporteur->getPrix();
             $cart->setReference($reference);
+            $cart->setStatus($status);
             $cart->setUser($this->getUser());
             $cart->setAdresse($address);
             $cart->setTotal($total);
@@ -89,8 +95,8 @@ class CheckoutController extends AbstractController
             $em->persist($cart);
             
             for ($i = 0; $i < count($panierWithData ); $i++) {
-                $commande = new CartDetails();
-                $commande->setCart($cart);
+            $commande = new CartDetails();
+           $commande->setCart($cart);
            $commande->setArticles($panierWithData [$i]['product']);
            $commande->setQuantity($panierWithData [$i]['quantity']);
            $commande->setPrice($panierWithData[$i]['product']->getPrix() *$panierWithData [$i]['quantity'] );
@@ -101,8 +107,11 @@ class CheckoutController extends AbstractController
 
             $em->flush();
             $session->clear();
-
+         
+          
             return $this->redirectToRoute('recap');
+         
+
            
         }
       

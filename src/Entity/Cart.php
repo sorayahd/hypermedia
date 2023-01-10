@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
@@ -44,9 +45,16 @@ class Cart
     #[ORM\Column(length: 255)]
     private ?string $reference = null;
 
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?StatusCommande $status = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $Date_commande = null;
+
     public function __construct()
     {
-        
+        $this->Date_commande = new \Datetime();
         $this->article = new ArrayCollection();
         $this->cartDetails = new ArrayCollection();
     }
@@ -208,6 +216,30 @@ class Cart
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getStatus(): ?StatusCommande
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?StatusCommande $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDateCommande(): ?\DateTimeInterface
+    {
+        return $this->Date_commande;
+    }
+
+    public function setDateCommande(\DateTimeInterface $Date_commande): self
+    {
+        $this->Date_commande = $Date_commande;
 
         return $this;
     }
