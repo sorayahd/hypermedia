@@ -65,7 +65,10 @@ class Article
 
     #[ORM\Column(nullable: true)]
     
-    private ?int $nombreAchat = null;
+    private ?int $nombreLike = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comments::class, orphanRemoval: true)]
+    private Collection $comments;
 
 
 
@@ -76,6 +79,7 @@ class Article
         $this->taille = new ArrayCollection();
         $this->tailleArticles = new ArrayCollection();
         $this->Likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
 
 
     }
@@ -377,14 +381,44 @@ class Article
         return false;
     }
 
-    public function getNombreAchat(): ?int
+    public function getnombreLike(): ?int
     {
-        return $this->nombreAchat;
+        return $this->nombreLike;
     }
 
-    public function setNombreAchat(?int $nombreAchat): self
+    public function setnombreLike(?int $nombreLike): self
     {
-        $this->nombreAchat = $nombreAchat;
+        $this->nombreLike = $nombreLike;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getArticle() === $this) {
+                $comment->setArticle(null);
+            }
+        }
 
         return $this;
     }

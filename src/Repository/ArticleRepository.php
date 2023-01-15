@@ -62,6 +62,10 @@ class ArticleRepository extends ServiceEntityRepository
            return $qb->getQuery()->getResult();      
        }
        
+       public function findLike()
+       {
+           return $this->findBy(array(), array('nombreLike' => 'DESC'));
+       }
 
        public function findSame($categorie,$id)
        {
@@ -80,9 +84,32 @@ class ArticleRepository extends ServiceEntityRepository
         ->getResult()
     ;
        }
-       
+
+
+
+
+
+    public function findByPrice($minPrice, $maxPrice)
+    {
+     
+            $query = $this->createQueryBuilder('a');
+            if ($minPrice != null) 
+            {
+                $query->where('a.prix >= :minP ');
+                $query->setParameter('minP', $minPrice);
+            }
+            if($maxPrice!=null){
+                $query->andWhere('a.prix <=:maxP');
+            $query->setParameter('maxP', $maxPrice);
+            }
+                $query->orderBy('a.prix', 'ASC');
+
+            
+            return $query->getQuery()->getResult();
        
 
+
+    }
 
 
 

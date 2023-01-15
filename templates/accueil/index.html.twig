@@ -65,8 +65,10 @@ integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ path('app_article_index')}}">Tous les produits</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                 <li><a class="dropdown-item" href="#!">Les plus recommandés</a></li>
-                                 <li><a class="dropdown-item" href="#!">Les plus visités</a></li>
+                                  <li><a class="dropdown-item" href="{{path('plusAime')}}">Les plus aimés  </a></li>
+
+                                     <li><a class="dropdown-item" href="{{path('plusVendu')}}">Les plus vendu</a></li>
+
                                  <li><a class="dropdown-item" href="#!">Me Recommander</a></li>
                                
                             </ul>
@@ -101,7 +103,7 @@ integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{path('app_article_promotion')}}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Les plus populaire</a></li>
+                                <li><a class="dropdown-item" href="{{path('plusAime')}}">Les plus aimés  </a></li>
                                 <li><a class="dropdown-item" href="#!">Nouveau</a></li>
                             </ul>
                         </li>

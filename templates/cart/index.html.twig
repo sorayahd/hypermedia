@@ -94,14 +94,19 @@ background: white
 
 </style>
 <body>
-<div class="page-wrap">
 
-<div class="example-wrapper">
+<div class="page-wrap">
+<div class="container">
+<br>
+
+
+
 
 
    <section class="h-100 gradient-custom">
-  
-  <div class="test">
+   
+<!-- barre de progression-->
+{% if items | length > 0 %}
   <div class="stepper-wrapper">
   <div class="stepper-item completed">
     <div class="step-counter">1</div>
@@ -115,8 +120,9 @@ background: white
     <div class="step-counter">3</div>
     <div class="step-name">Confirmation</div>
   </div>
- 
   </div>
+  {% endif %}
+
     <div class="row d-flex justify-content-center my-4">
       <div class="col-md-8">
         <div class="card mb-4">
@@ -174,6 +180,7 @@ background: white
               <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                 <!-- Quantity -->
                 <div class="d-flex mb-4" style="max-width: 300px">
+                
                   <a href= "{{ path('remove_cart', {id: item.product.id}) }}" class="btn btn-primary px-3 me-2"style="height: 30px;">
                   
                      <i class="fas fa-minus"></i>
@@ -265,20 +272,25 @@ background: white
          class="btn btn-primary btn-lg btn-block" data-mdb-toggle="tooltip"
                   title="Remove item">Valider mon panier</a>
      
-            
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-</div>
-</body>
- {% else %}
+            {% else %}
 
 <p> VOTRE PANIER NE COMPORTE AUCUN ARTICLE .
 Enregistrer votre sélection d'articles.</p>
 {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+</section> 
+
+
+</div>
+</div>
+</body>
+ 
             
 {% endblock %}
 

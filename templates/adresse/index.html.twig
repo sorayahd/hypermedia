@@ -3,6 +3,7 @@
 {% block title %}Adresse index{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Adresse index</h1>
 
     <table class="table">
@@ -27,8 +28,8 @@
                 <td>{{ adresse.postale }}</td>
                 <td>{{ adresse.pays }}</td>
                 <td>
-                    <a href="{{ path('app_adresse_show', {'id': adresse.id}) }}">show</a>
-                    <a href="{{ path('app_adresse_edit', {'id': adresse.id}) }}">edit</a>
+                    <a href="{{ path('app_adresse_show', {'id': adresse.id}) }}">consulter</a>
+                    <a href="{{ path('app_adresse_edit', {'id': adresse.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -39,5 +40,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_adresse_new') }}">Create new</a>
+    <a href="{{ path('app_adresse_new') }}">Ajouter une nouvelle adresse</a>
+    </div>
 {% endblock %}

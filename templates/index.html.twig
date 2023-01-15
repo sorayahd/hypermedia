@@ -80,8 +80,10 @@ margin-bottom: -142px;
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ path('app_article_index')}}">Tous les produits</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                 <li><a class="dropdown-item" href="#!">Les plus recommandés</a></li>
-                                  <li><a class="dropdown-item" href="#!">Les plus visité</a></li>
+                                 <li><a class="dropdown-item" href="{{path('plusAime')}}">Les plus aimés  </a></li>
+
+                                  <li><a class="dropdown-item" href="{{path('plusVendu')}}">Les plus vendu</a></li>
+                                  <li><a class="dropdown-item" href="#!">Me Recommander</a></li>
                             </ul>
                         </li>
 
@@ -105,7 +107,7 @@ margin-bottom: -142px;
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="{{path('app_article_jeans_femme')}}">Jeans</a></li>
                                 <li><a class="dropdown-item" href="{{path('app_article_tshirt_femme')}}">Tshirt</a></li>
-                                <li><a class="dropdown-item" href="{{path('app_article_chaussure_femme')}}">Chaussures</a></li>
+                                <li><a class="dropdown-item" href="{{path('app_article_chaussure_femme')}}">Chaussuress</a></li>
                             </ul>
                         </li>
 
@@ -115,8 +117,8 @@ margin-bottom: -142px;
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{path('app_article_promotion')}}">Tous les produit</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                               <li><a class="dropdown-item" href="{{path('plusAime')}}">Les plus aimés  </a></li>
+                                <li><a class="dropdown-item" href="#!">Nouveau</a></li>
                             </ul>
                         </li>
                           <form method="post" action="{{ path('app_article_index')}}"  name="recherche" class="form-inline my-2 my-lg-0">

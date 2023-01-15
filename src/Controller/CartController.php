@@ -10,10 +10,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+// #[Route('/article', methods: ['GET', 'POST'])]
 
 class CartController extends AbstractController
 {
-    #[Route('/cart', name: 'app_cart')]
+    #[Route('/cart', name: 'app_cart', methods: ['GET', 'POST'])]
     public function index(SessionInterface $session,ArticleRepository $articleRepository): Response
     {
         $panier = $session->get('panier', []);
@@ -51,10 +52,9 @@ class CartController extends AbstractController
         ]);
     }
 
-      /**
-     * @Route("/cart/remove/{id}", name="remove_cart")
-     *
-      */
+    /**
+    * @Route("/cart/remove/{id}", name="remove_cart", methods={"GET","POST"} )
+    */
     
      public function removeCart(Article $article,SessionInterface $session ){
         $panier = $session->get('panier',[]);
@@ -67,7 +67,7 @@ class CartController extends AbstractController
             }
         }
        $session->set("panier",$panier);
-       return $this->redirect("app_cart");
+       return $this->redirectToRoute("app_cart");
        
     }
 
@@ -106,7 +106,7 @@ class CartController extends AbstractController
             }
         
        $session->set("panier",$panier);
-       return $this->redirect("app_cart");
+       return $this->redirectToRoute("app_cart");
        
     }
    

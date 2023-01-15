@@ -95,7 +95,7 @@ class CheckoutController extends AbstractController
             $em->persist($cart);
             
             for ($i = 0; $i < count($panierWithData ); $i++) {
-            $commande = new CartDetails();
+         $commande = new CartDetails();
            $commande->setCart($cart);
            $commande->setArticles($panierWithData [$i]['product']);
            $commande->setQuantity($panierWithData [$i]['quantity']);

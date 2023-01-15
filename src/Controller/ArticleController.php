@@ -7,12 +7,15 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\ArticleLike;
 use App\Entity\ArticleSearch;
+use App\Entity\Comments;
 use App\Entity\User;
 use App\Form\Article1Type;
 use App\Form\ArticleSearchType;
+use App\Form\CommentsType;
 use App\Repository\ArticleLikeRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieArticleRepository;
+use App\Repository\CommentsRepository;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FileUploadError;
@@ -38,7 +41,7 @@ class ArticleController extends AbstractController
         ]);
     }
     
-    #[Route('/', name: 'app_article_index', methods: ['GET', 'POST'])]
+    #[Route('/', name: 'app_article_index', methods: ['GET', 'POST']) ]
     public function index(ArticleRepository $articleRepository,SessionInterface $session,Request $request): Response
     {
 
@@ -89,106 +92,116 @@ class ArticleController extends AbstractController
     }
     
    
-    #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ArticleRepository $articleRepository,SluggerInterface $slugger): Response
-    {
-        $article = new Article();
-        $form = $this->createForm(Article1Type::class, $article);
-        $form->handleRequest($request);
+    // #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
+    // public function new(Request $request, ArticleRepository $articleRepository,SluggerInterface $slugger): Response
+    // {
+    //     $article = new Article();
+    //     $form = $this->createForm(Article1Type::class, $article);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $brochureFile = $form->get('image')->getData();
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $brochureFile = $form->get('image')->getData();
 
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+    //         // this condition is needed because the 'brochure' field is not required
+    //         // so the PDF file must be processed only when a file is uploaded
+    //         if ($brochureFile) {
+    //             $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+    //             // this is needed to safely include the file name as part of the URL
+    //             $safeFilename = $slugger->slug($originalFilename);
+    //             $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('uploads'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+    //             // Move the file to the directory where brochures are stored
+    //             try {
+    //                 $brochureFile->move(
+    //                     $this->getParameter('uploads'),
+    //                     $newFilename
+    //                 );
+    //             } catch (FileException $e) {
+    //                 // ... handle exception if something happens during file upload
+    //             }
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $article->setImage($newFilename);
-            }
-
-
-
-            $articleRepository->save($article, true);
-
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('article/new.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
-    }
+    //             // updates the 'brochureFilename' property to store the PDF file name
+    //             // instead of its contents
+    //             $article->setImage($newFilename);
+    //         }
 
 
 
+    //         $articleRepository->save($article, true);
 
-    #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
+    //         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('article/new.html.twig', [
+    //         'article' => $article,
+    //         'form' => $form,
+    //     ]);
+    // }
+
+
+
+
+    #[Route('/{id}', name: 'app_article_show', methods: ['GET','POST'])]
     public function show(Article $article,ArticleRepository $articleRepository,Connection $connection
-    ,ArticleLikeRepository $articleLikeRepository ): Response
+    ,ArticleLikeRepository $articleLikeRepositor,Request $request,CommentsRepository $commentsRepository ): Response
     {
         $cat = $article->getCategorie()->getId();
         $sql = "SELECT * FROM Article WHERE article.categorie_id = $cat ORDER BY RAND() LIMIT 5";
         $data = $connection->fetchAllAssociative($sql);
-       // dd($data);
-       // $ArticleSame = $articleRepository->findSame(['categorie' => $articleCat],$article->getId());
-        // for($i = 0 ; $i < count($ArticleSame ); $i++) {
-        //     $randomi[$i] = $ArticleSame;
-        // }
-        // //shuffle($randomi);
-        
+    //partie commentaire
 
-        //  dd($ArticleSame);
+    $comment = new Comments();
+        $commentaire = $commentsRepository->findAll();
+    $forms = $this->createForm(CommentsType::class, $comment);
+    $forms->handleRequest($request);
+
+    if ($forms->isSubmitted() && $forms->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setArticle($article);
+        $commentsRepository->save($comment, true);
+
+        return $this->redirectToRoute('app_article_show', ['id'=>$article->getId()]);
+    }
+
+   
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
-            'articleSame' =>$data
+            'articleSame' =>$data,
+            'forms' => $forms->createView(),
+            'comment' => $commentaire,
         ]);
     }
 
 
     
-    #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
-    {
-        $form = $this->createForm(Article1Type::class, $article);
-        $form->handleRequest($request);
+    // #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    // {
+    //     $form = $this->createForm(Article1Type::class, $article);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $articleRepository->save($article, true);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $articleRepository->save($article, true);
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-        }
+    //         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    //     }
 
-        return $this->renderForm('article/edit.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
-    }
+    //     return $this->renderForm('article/edit.html.twig', [
+    //         'article' => $article,
+    //         'form' => $form,
+    //     ]);
+    // }
 
-    #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
-            $articleRepository->remove($article, true);
-        }
+    // #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
+    // public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+    //         $articleRepository->remove($article, true);
+    //     }
 
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-    }
+    //     return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    // }
 
  //----------------------------ARTICLE PAR GENRE----------------------
 
@@ -332,13 +345,13 @@ class ArticleController extends AbstractController
             'categorie'=> 3
         ]);
 
-        return $this->render('article/T-shirt/tshirtHomme.html.twig', [
+        return $this->render('article/chaussures/chaussureHomme.html.twig', [
             'articles' => $articles,
         ]);
     }
  
       /**
-     * @Route("/tshirt/femme", name="app_article_chaussure_femme")
+     * @Route("/chaussure/femme", name="app_article_chaussure_femme")
      * 
      */
     public function chaussureFemme( ArticleRepository $repository ): Response
@@ -349,7 +362,7 @@ class ArticleController extends AbstractController
             'categorie'=> 3
     ]);
 
-        return $this->render('article/T-shirt/tshirtFemme.html.twig', [
+        return $this->render('article/chaussures/chaussureFemme.html.twig', [
             'articles' => $articles,
         ]);
     }
@@ -454,34 +467,117 @@ class ArticleController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
        
-        
+        $cmpt = $article->getnombreLike();
+
         if ($article->isLikedByUser($this->getUser())){
             $like = $articleLikeRepository->findOneBy([
                 'article' => $article,
                 'user' => $this->getUser()
-                
+             
             ]);
 
+        $cmpt = $cmpt-1;
+        $article->setnombreLike($cmpt);
+       // $entityManager->persist($cmpt);
         $entityManager->remove($like);
         $entityManager->flush();
-        return $this->redirectToRoute('app_article_show');
+        return $this->redirectToRoute('app_article_show',['id' => $article->getId()]);
         }
 
         
         $like = new ArticleLike();
+       
+        $cmpt = $cmpt + 1;
         $like->setArticle($article);
-        $like->setUser($this->getUser()).
+        $like->setUser($this->getUser()) .
+        $article->setnombreLike($cmpt);
+        //$entityManager->persist($article);
         $entityManager->persist($like);
         $entityManager->flush();
 
         
-        return $this->redirectToRoute('app_article_show');
+        return $this->redirectToRoute('app_article_show',['id' => $article->getId()]);
     }
 
    
 
    
+     /**
+     * @Route("/ArticleRecommande/plusAime", name="plusAime" )
+     * 
+     */
 
+     public function PlusAime(ArticleRepository $articleRepository,ArticleLikeRepository $articleLikeRepository,Request $request ): Response
+     {
+        $article = $articleRepository->findLike();
+       // dd($article);
+
+
+        $ArticleRecherche = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class, $ArticleRecherche);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = [];
+       
+            $minPrice = $ArticleRecherche->getminPrix()/100;
+            $maxPrice = $ArticleRecherche->getmaxPrix()/100;
+
+            $article = $articleRepository->findByPrice($minPrice, $maxPrice);
+               
+        }
+
+        return $this->render('article/plusAime.html.twig', [
+            'articles' => $article,
+            'form' =>$form->createView()
+           
+        ]);
+         
+     }
+
+
+
+
+     /**
+     * @Route("/ArticleRecommande/plusVendu", name="plusVendu" )
+     * 
+     */
+
+     public function PlusVnedu(ArticleRepository $articleRepository,Connection $connection
+     ,ArticleLikeRepository $articleLikeRepository ,Request $request): Response
+     {
+         
+         $sql = "SELECT id,categorie_id,sexe_id,nom,description,prix,image,promotion, articles_id,sum(quantity) AS nbAcht FROM cart_details inner join
+         article on article.id=cart_details.articles_id GROUP BY articles_id order by nbAcht DESC";
+      
+         $data = $connection->fetchAllAssociative($sql);
+         $ArticleRecherche = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class, $ArticleRecherche);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = [];
+       
+            $minPrice = $ArticleRecherche->getminPrix()*100;
+            $maxPrice = $ArticleRecherche->getmaxPrix()*100;
+
+            $data = $articleRepository->findByPrice($minPrice, $maxPrice);
+               
+        }
+
+        return $this->render('article/plusAchete.html.twig', [
+            'articles' => $data,
+            'form' =>$form->createView()
+           
+        ]);
+     }
+
+
+
+
+
+
+     
 
 
 }

@@ -1,14 +1,16 @@
 {% extends 'index.html.twig' %}
 {% block body %}
 <body>
+<style>
 
+</style>
 <div class="page-wrap">
  
      
  <section class="test">
        
 <div class="container px-4 px-lg-5 mt-5">
- <button class="btn"  onclick="myFunction()"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
+<button class="btn"  onclick="myFunction()"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
  
 
 <div id="myDIV" style="display:none">  
@@ -21,6 +23,8 @@
 {{form_end(form)}}
 </div>
 <br>
+
+
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                
                     {% for article in articles %}
@@ -50,9 +54,12 @@
                              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
                                 <h5>{{article.nom}}</h5>
-                                 {% if article.promotion is not null  %}
-                                    <span class="text-dark text-decoration-line-through danger ">{{article.prix //100 }}€</span>
-                                    <div class= "position-absolute" style="top: 0.1rem;   text-align:left ; color:red">
+                                <div class="text-center">
+                                {% if article.promotion is not null  %}
+                                    <span class="text-dark text-decoration-line-through danger ">
+                                    {{article.prix //100 }}€</span>
+                                    <div class= "position-absolute" style="top: 0.1rem;  
+                                     text-align:left ; color:red">
                                      <img src="{{asset('uploads/promo.png') }} " width="30%">
                                       </div>
                                    <span class="text-danger "> {{article.promotion //100  }}€</span>
@@ -61,25 +68,19 @@
                                   
                                     {% endif %}
                                     
+                                </div>
+                                 
                                        
-                                         {% if is_granted("ROLE_USER") %}
-                            {% set isFavorite = false %}
-							{% for favoris in article.favoris %}
-								{% if favoris.id == app.user.id %}
-                                    {% set isFavorite = true %}
-								{% endif %}    
-							{% endfor %}
-                            {% if isFavorite %}
-								<a href="{{ path('app_retrait_favoris', {id: article.id}) }}">
-                                <i class="fas fa-heart" style="color:red" ></i></a>
-                            {% else %}
-								<a href="{{ path('app_ajout_favoris',
-                                 {id: article.id}) }}"><i class="far fa-heart" style="color:red"></i></a>
-                            {% endif %}
+                                       
 
-						   {% else %}
-							<i class="far fa-heart" style="color:red"></i>
-						{% endif %}
+
+                       <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
                             </div>
                             </div>
                              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

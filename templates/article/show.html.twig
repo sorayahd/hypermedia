@@ -1,3 +1,4 @@
+
 {% extends 'index.html.twig' %}
 
 {% block title %}Article{% endblock %}
@@ -81,15 +82,6 @@ transform: scale(1.5);
                                 <span class="ml-1"></span> </div> <i class="fa fa-shopping-cart text-muted"> </i>
                             </div>
 
-
-
-
-
-
-
-
-
-                            
                             <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand"> </span>
                                 <h5 class="text-uppercase">{{article.nom}}</h5>
                                 {% if article.promotion is not null  %}
@@ -141,24 +133,17 @@ transform: scale(1.5);
 							<i class="far fa-heart" style="color:red"></i>
 						{% endif %}
                       
+  {% if app.user and article.isLikedByUser(app.user) %}
+								<a href="{{ path('app_like', {id: article.id}) }}">
+                                <i class="fas fa-thumbs-up" ></i></a>
+                            {% else %}
+								<a href="{{ path('app_like',
+                                 {id: article.id}) }}"><i class="far fa-thumbs-up "></i></a>
+                          
 
-                       <a href="{{ path('app_like', {id: article.id}) }}">
-
-                       {% if app.user and article.isLikedByUser(app.user) %}
- 
-                        <i class="fas fa-thumbs-up "
-                         aria-hidden="true" style="font-size: 15pt"></i><a/>
-                        {{article.likes | length }}
-                            </div>
-                        {% else  %}
-
-                         <i class="far fa-thumbs-up "
-                         aria-hidden="true" style="font-size: 15pt;"></i><a/>
-                         {{article.likes | length }}
-                        
-                            </div>
-                         {% endif %}
-
+                         {% endif %} 
+                       {{article.likes | length }}
+                      
 
 
 
@@ -172,8 +157,69 @@ transform: scale(1.5);
             </div>
         </div>
     </div>
+
+<hr> 
+<div class="container">
+<div class="h3" style="text-align:center">Commentaires des clients 
+ </div><br>
+
+
+<div class="row d-flex justify-content-center">
+  <div class="col ">
+
+    <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+    
+      <div class="card-body p-4">
+       {% for commentaire in article.comments %}
+        <div class="form-outline mb-4">
+         
+      
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+         
+            <p>  
+             <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+             {{commentaire.user.email}}
+     
+       </p>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-row align-items-center">
+              
+                <p class="small mb-0 ms-2">{{commentaire.content}}</p>
+               
+              </div>
+              <div class="d-flex flex-row align-items-center">
+                <p class="small text-muted mb-0">{{commentaire.date|date('d/M/Y')}}</p>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+  {% endfor %}
+       {{ form_start(forms)}}
+{{form_row(forms.content)}}
+
+
+<button type= "submit"> commenter </button>
+{{form_end(forms)}}
+
+<br>
+
+      
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
           <hr>
-          <div class="h3" style="text-align:center">Dans la meme catégorie </div>
+          <div class="h3" style="text-align:center">Dans la meme catégorie </div><br>
 
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                
@@ -280,4 +326,3 @@ function rtn() {
 }
 </script>
 {% endblock %}
-
