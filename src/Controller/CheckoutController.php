@@ -13,18 +13,42 @@ use App\Repository\ArticleRepository;
 use App\Repository\CartDetailsRepository;
 use App\Repository\CartRepository;
 use App\Repository\StatusCommandeRepository;
-use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
+use App\Service\SendMailService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Email;
 
 
 class CheckoutController extends AbstractController
 {
+
+
+
+    #[Route('/email')]
+    public function sendEmail(MailerInterface $mailer): Response
+    {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to('you@example.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
+
+        return $this->render('emails/test.html.twig');
+    }
+
 
     /**
      * @Route("/recap", name="recap")
@@ -41,7 +65,8 @@ class CheckoutController extends AbstractController
     public function new (
         Request $request,SessionInterface $session,
         ArticleRepository $articleRepository, ManagerRegistry $doctrine,
-        StatusCommandeRepository $statusRepo,CartDetailsRepository $cartDetailsRepository): Response
+        StatusCommandeRepository $statusRepo,CartDetailsRepository $cartDetailsRepository
+        ,MailerInterface $mailer): Response
     {
 
         $panier = $session->get('panier', []);
@@ -78,7 +103,15 @@ class CheckoutController extends AbstractController
         $em = $doctrine->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
-           
+            //$mail->send('wearit@gmail.com', $this->getUser()->getEmail(),
+            // $email=(new TemplatedEmail())
+            // ->from('wearIt@gmail.com')
+            // ->to('haddad@gmail.com')
+            // ->subject('hello test')
+            // ->htmlTemplate('emails/test.html.twig');
+            // $mailer->send($email);
+            //dd($email);
+           // dd($this->getUser()->getEmail());
             $status= $statusRepo->find('1');
             $reference = $this->generateUuid();
             $data = $form->getData();
@@ -93,7 +126,7 @@ class CheckoutController extends AbstractController
             $cart->setNbArticle($quantityTotal);
             $cart->setTransporteur($transporteur);
             $em->persist($cart);
-            
+           
             for ($i = 0; $i < count($panierWithData ); $i++) {
          $commande = new CartDetails();
            $commande->setCart($cart);
@@ -104,8 +137,18 @@ class CheckoutController extends AbstractController
            $em->persist($commande);
           
            }
-
+          
             $em->flush();
+            $email = (new TemplatedEmail())
+            ->from('noreplay@solway-cs.com')
+            ->to('soraya@gmail.com')
+            ->cc('solway-cs@solway.com')
+            ->bcc('Amine-Hbibiy@solway-cs.com')
+            ->subject('Nouveau ticket sur le site de solway consulting & services')
+            ->text('Sending emails is fun again!')
+            ->htmlTemplate('emails/test.html.twig');
+
+            $mailer->send($email);
             $session->clear();
          
           
