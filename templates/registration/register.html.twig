@@ -21,22 +21,35 @@ height: 100%;
 }
 }
 </style>
-
-
-
 <br>
-   
+
+   <center>
+     {% for message in app.flashes('success') %}
+    <div class="alert alert-success" role="alert">
+ {{ message }}
+
+ </div>
+ 
+ {% endfor %}
+</center>
+      
 <section class="vh-100">
+
   <div class="container-fluid h-custom">
+
     <div class="row d-flex justify-content-center align-items-center h-100">
+   
       <div class="col-md-9 col-lg-6 col-xl-5">
+    
 		<img src="{{ absolute_url(asset('assets/Images/test.jpg'))}}" width="82%" 
+   
           class="img-fluid" alt="Sample image">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form method="post">
+    
           <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-            <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+           
            
           </div>
 
@@ -51,45 +64,47 @@ height: 100%;
 
 
           <div class="form-outline mb-4">
-             {{ form_widget(registrationForm.name,{'attr': {'class': 'form-control form-control-lg'}}) }}
+             {{ form_widget(registrationForm.name,{'attr': {'class': 'form-control form-control-lg',
+             'placeholder': 'Nom utilisateur '} }) }}
             
-            <label class="form-label" for="form3Example3">nom utilisateur</label>
+            {# <label class="form-label" for="form3Example3">nom utilisateur</label> #}
           </div>
 
           <div class="form-outline mb-4">
-             {{ form_widget(registrationForm.email,{'attr': {'class': 'form-control form-control-lg'}}) }}
+             {{ form_widget(registrationForm.email,{'attr': {'class': 'form-control form-control-lg',
+              'placeholder': 'Email '}}) }}
             
-            <label class="form-label" for="form3Example3">Addresse email</label>
+            {# <label class="form-label" for="form3Example3">Addresse email</label> #}
           </div>
 
           <!-- Password input -->
           <div class="form-outline mb-3">
-             {{ form_widget(registrationForm.plainPassword.first, { 'attr': {'class': 'form-control form-control-lg'}}) }} 
+             {{ form_widget(registrationForm.plainPassword.first, { 'attr': {'class': 'form-control form-control-lg',
+              'placeholder': 'Mot de passe'}}) }} 
              
           
-            <label class="form-label" for="form3Example4">Mot de passe</label>
+            {# <label class="form-label" for="form3Example4">Mot de passe</label> #}
           </div>
 
           <div class="form-outline mb-3">
-             {{ form_widget(registrationForm.plainPassword.second, { 'attr': {'class': 'form-control form-control-lg'}}) }} 
+             {{ form_widget(registrationForm.plainPassword.second, { 'attr': {'class': 'form-control form-control-lg',
+              'placeholder': 'Confirmer le mot de passe'}}) }} 
              
           
-            <label class="form-label" for="form3Example4">Mot de passe</label>
+            {# <label class="form-label" for="form3Example4">Mot de passe</label> #}
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
             <!-- Checkbox -->
             <div class="form-check mb-0">
-             
-                
               </label>
             </div>
            
           </div>
 
-          <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="submit" class="btn btn-primary btn-lg"
-              style="padding-left: 2.5rem; padding-right: 2.5rem;">Valider</button>
+          <div class="text-center text-lg-start">
+            <button type="submit" class="btn btn-light btn-lg"
+              style="color:white;padding-left: 2.5rem; padding-right: 2.5rem;">Valider</button>
              
           </div>
  {{ form_end(registrationForm) }}

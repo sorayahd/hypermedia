@@ -14,6 +14,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            pattern: ^/
+            user_checker: App\Security\UserChecker
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\LoginAuthentificatorAuthenticator
@@ -31,7 +33,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/accueil, roles: ROLE_USER }
+         - { path: ^/article, roles: ROLE_USER }
          - { path: ^/admin, roles: ROLE_ADMIN}
 
 when@test:

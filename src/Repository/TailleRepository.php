@@ -39,6 +39,29 @@ class TailleRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByTaille($taille)
+    {
+     
+            $query = $this->createQueryBuilder('a');
+            if ($taille != null) 
+            {
+                $query->where('a.taille >= :minP ');
+                $query->where('a.taille >= :minP ');
+                $query->setParameter('minP', $taille);
+            }
+            // if($maxTaille!=null){
+            //     $query->andWhere('a.taille <=:maxP');
+            // $query->setParameter('maxP', $maxTaille);
+            // }
+                //$query->orderBy('a.prix', 'ASC');
+
+            
+            // return $query->getQuery()->getResult();
+       
+
+
+    }
+
 //    /**
 //     * @return Taille[] Returns an array of Taille objects
 //     */

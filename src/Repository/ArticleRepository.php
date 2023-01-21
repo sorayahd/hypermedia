@@ -67,24 +67,13 @@ class ArticleRepository extends ServiceEntityRepository
            return $this->findBy(array(), array('nombreLike' => 'DESC'));
        }
 
-       public function findSame($categorie,$id)
-       {
       
-        return $this->createQueryBuilder('a')
-        ->andWhere('a.categorie = :categorie')
-        ->setParameter('categorie', $categorie)
-        ->andWhere('a.id NOT IN (:id)')
-       
-        ->setParameter('id',$id)
-       
-        //->orderBy('RAND()')
-        // ->setMaxResults(5)
-        ->getQuery()
-
-        ->getResult()
-    ;
+       public function findPlusVu()
+       {
+           return $this->findBy(array(), array('nbVu' => 'DESC'));
        }
 
+       
 
 
 
@@ -112,23 +101,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
        
        public function findArticle($motcle)

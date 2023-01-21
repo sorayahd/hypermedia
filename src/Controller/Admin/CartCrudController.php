@@ -26,7 +26,7 @@ class CartCrudController extends AbstractCrudController
             TextField::new('reference'),
             IntegerField::new('nbArticle'),
             NumberField::new('Total'),
-            AssociationField::new('user')->get,
+            AssociationField::new('user'),
             AssociationField::new('transporteur'),
             AssociationField::new('adresse'),
 

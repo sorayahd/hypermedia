@@ -7,7 +7,16 @@
 
 
 {% block body %}
+<br>
+<center>
+ {% for message in app.flashes('success') %}
+    <div class="alert alert-success" role="alert">
+ {{ message }}
 
+ </div>
+ 
+ {% endfor %}
+ </center>
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -63,35 +72,34 @@ height: 100%;
           <!-- Email input -->
           <div class="form-outline mb-4">
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail"  class="form-control form-control-lg"
-              placeholder="Enter a valid email address" />
-            <label class="form-label" for="form3Example3">Addresse email</label>
+              placeholder="Email" />
+            {# <label class="form-label" for="form3Example3">Addresse email</label> #}
           </div>
 
           <!-- Password input -->
           <div class="form-outline mb-3">
             <input type="password" name="password" id="inputPassword"  class="form-control form-control-lg"
-              placeholder="Enter password" />
+              placeholder="Mot de passe " />
             <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
                                     >
-            <label class="form-label" for="form3Example4">Mot de passe</label>
+            {# <label class="form-label" for="form3Example4">Mot de passe</label> #}
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
             <!-- Checkbox -->
-            <div class="form-check mb-0">
-             
-                 <a href="#!" class="text-body">Mot de passe oublié?</a>
-              </label>
-            </div>
+           
            
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="submit" class="btn btn-primary btn-lg"
-              style="padding-left: 2.5rem; padding-right: 2.5rem;">Se connecter</button>
+            <button type="submit" class="btn btn-light btn-lg"  
+              style="color:white; padding-left: 2.5rem; padding-right: 2.5rem; ">Se connecter</button>
+              
             <p class="small fw-bold mt-2 pt-1 mb-0">Pas encore de compte? <a href="{{ path('app_register') }}"
                 class="link-danger">créer mon compte</a></p>
+                            <p class="small fw-bold mt-2 pt-1 mb-0"><a href="{{ path('forgotten_password') }}"
+                >Mot de passe oublié?</a></p>
           </div>
 
         </form>

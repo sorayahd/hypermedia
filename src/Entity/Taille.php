@@ -27,6 +27,18 @@ class Taille
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: TailleArticle::class)]
     private Collection $tailleArticles;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $tailleMin = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $tailleMax = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $poidsMin = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $poidsMax = null;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -123,5 +135,53 @@ class Taille
         
 
         return $this->taille;
+    }
+
+    public function getTailleMin(): ?float
+    {
+        return $this->tailleMin;
+    }
+
+    public function setTailleMin(?float $tailleMin): self
+    {
+        $this->tailleMin = $tailleMin;
+
+        return $this;
+    }
+
+    public function getTailleMax(): ?float
+    {
+        return $this->tailleMax;
+    }
+
+    public function setTailleMax(?float $tailleMax): self
+    {
+        $this->tailleMax = $tailleMax;
+
+        return $this;
+    }
+
+    public function getPoidsMin(): ?int
+    {
+        return $this->poidsMin;
+    }
+
+    public function setPoidsMin(?int $poidsMin): self
+    {
+        $this->poidsMin = $poidsMin;
+
+        return $this;
+    }
+
+    public function getPoidsMax(): ?float
+    {
+        return $this->poidsMax;
+    }
+
+    public function setPoidsMax(?float $poidsMax): self
+    {
+        $this->poidsMax = $poidsMax;
+
+        return $this;
     }
 }

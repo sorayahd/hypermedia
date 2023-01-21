@@ -70,6 +70,9 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbVu = null;
+
 
 
     public function __construct()
@@ -80,6 +83,7 @@ class Article
         $this->tailleArticles = new ArrayCollection();
         $this->Likes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+      
 
 
     }
@@ -419,6 +423,18 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbVu(): ?int
+    {
+        return $this->nbVu;
+    }
+
+    public function setNbVu(?int $nbVu): self
+    {
+        $this->nbVu = $nbVu;
 
         return $this;
     }
