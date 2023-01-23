@@ -2,37 +2,35 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Cart;
+use App\Entity\Contact;
+use DoctrineExtensions\Query\Mysql\Date;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use phpDocumentor\Reflection\Types\Float_;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-class CartCrudController extends AbstractCrudController
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+
+class ContactCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Cart::class;
+        return Contact::class;
     }
 
     
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->HideOnForm(),
-            TextField::new('reference'),
-            IntegerField::new('nbArticle'),
-            NumberField::new('Total'),
+            IdField::new('id')->hideOnForm(),
+            TextField::new('sujet'),
+             DateField::new('Date'),
             AssociationField::new('user'),
-            AssociationField::new('transporteur'),
-            AssociationField::new('adresse'),
+            TextEditorField::new('message'),
 
-            AssociationField::new('status'),
-            
         ];
     }
     public function configureActions(Actions $actions): Actions
@@ -43,5 +41,6 @@ class CartCrudController extends AbstractCrudController
             ->disable(Action::NEW)
         ;
     }
+    
     
 }

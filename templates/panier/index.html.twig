@@ -22,8 +22,9 @@ td {
 
   <!-- Section-->
         <section class="test">
-            <div class="container px-4 px-lg-5 mt-5">
+            <div class="container px-4 px-lg-5">
                <h2 class="text-center mt-4">Mes commandes </h2>
+               <br>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
  
                
@@ -56,7 +57,20 @@ td {
            <td width="15%">{{ cart.DateCommande|date('d-m-Y')}}</td>
              <td width="20%">{{ cart.Adresse | replace({'[spr]' : '<br>'}) | raw}}</td>
             <td width="20%"> {{ cart.Transporteur | replace({'[spr]' : '<br>'}) | raw}}</td>
-         <td  width="10%">    <span class="badge bg-info text-white ms-1 rounded-pill">  {{ cart.Status.Status }} </span></td> 
+                     
+         <td  width="10%">    
+         {% if cart.Status.Status== 'Expédiée' %}
+         <span class="badge bg-danger danger text-white ms-1 rounded-pill">  
+         {{ cart.Status.Status }} </span></td> 
+       
+          {% elseif cart.Status.Status== 'Nouveau' %}
+         <span class="badge bg-info danger text-white ms-1 rounded-pill">  
+         {{ cart.Status.Status }} </span></td> 
+
+          {% elseif cart.Status.Status== 'En cours de préparation' %}
+         <span class="badge bg-success danger text-white ms-1 rounded-pill">  
+         {{ cart.Status.Status }} </span></td> 
+        {% endif %}
           
             <td  width="10%" > {{ cart.Total // 100}} €</td>
              <td  width="20%" > <a href="{{ path('OrderDetails_show', {'id': cart.id})}}"
@@ -69,16 +83,18 @@ td {
 
    {% endfor %}
   </tbody>
-   </table>
-                          
+   </table></br>
+                   
                     </div>
                 </div>
             </div>
 
 
 
-
+</br>
 </div>
+</br>
+          
 </body>
    
 

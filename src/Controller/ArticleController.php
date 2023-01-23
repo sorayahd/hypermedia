@@ -75,8 +75,8 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $article = [];
        
-            $minPrice = $ArticleRecherche->getminPrix();
-            $maxPrice = $ArticleRecherche->getmaxPrix();
+            $minPrice = $ArticleRecherche->getminPrix()*100;
+            $maxPrice = $ArticleRecherche->getmaxPrix()*100;
 
             $article = $articleRepository->findByPrice($minPrice, $maxPrice);
                
@@ -413,7 +413,7 @@ class ArticleController extends AbstractController
         $article->addFavori($this->getUser());
         $entityManager->persist($article);
         $entityManager->flush();
-        return $this->redirectToRoute('app_article_index');
+        return $this->redirectToRoute('app_index_favoris');
     }
 
     /**
@@ -428,7 +428,7 @@ class ArticleController extends AbstractController
         $article->removeFavori($this->getUser());
         $entityManager->persist($article);
         $entityManager->flush();
-        return $this->redirectToRoute('app_article_index');
+        return $this->redirectToRoute('app_index_favoris');
     }
 
      /**
@@ -504,8 +504,6 @@ class ArticleController extends AbstractController
         
         return $this->redirectToRoute('app_article_show',['id' => $article->getId()]);
     }
-
-   
 
    
      /**
@@ -616,57 +614,49 @@ class ArticleController extends AbstractController
      }
 
 
-
-
- /**
+    /**
      * @Route("/ArticleRecommande/recommande", name="app_article_recommande" ) 
      */
 
-     public function recommande( ArticleRepository $articleRepository ,Request $request,TailleRepository $tailleRepository,     
+     public function recommande( Request $request,     
      Connection $connection,ManagerRegistry $doctrine): Response
      { 
         $entityManager=$doctrine->getManager();
- 
-        //$article = $articleRepository->findAll();
-         $ArticleRecherche = new SearchByTaille();
-
-         $form = $this->createForm(SearchByTailleType::class, $ArticleRecherche);
-         $form->handleRequest($request);
-         //$taillee =$form->get('minTaille')->getData();
-         $article = [];
-         if ($form->isSubmitted() && $form->isValid()) {
-             $taille=$ArticleRecherche->getMinTaille();
-            if ($taille = "")
-                $article = $entityManager->getRepository(Taille::class)->findBy(['taille_min' => $taille]);
-            dd($article);
-
         
-            
+         //$ArticleRecherche = new SearchByTaille();
 
+
+
+         $article = [];
+         $form = $this->createForm(SearchByTailleType::class);
+         $form->handleRequest($request);
+         if ($form->isSubmitted() && $form->isValid()) {
+
+            $taille = $form["minTaille"]->getData();
+            $poids = $form["MaxTaille"]->getData();
+        
+            $sql =" SELECT article.id,promotion, taille,taille_min,taille_max,
+            poids_min,poids_max,articls_id,taille_id, nom,prix,image from
+            `taille` inner join taille_article  on taille.id=taille_article.taille_id INNER JOIN article ON
+             article.id=taille_article.articls_id
+
+             WHERE ($taille 
+                BETWEEN taille_min and taille_max) And ( $poids 
+                BETWEEN poids_min and poids_max) ";
+                 $article = $connection->fetchAllAssociative($sql);   
            
          }
- 
 
-      
-       
-
-        //$cat = $article->getCategorie()->getId();
-        //$sql = "SELECT * FROM Taille WHERE $taillee BETWEEN taille.taille_min AND taille.taille_max ";
-        //$data = $connection->fetchAllAssociative($sql);
-        //dd($data);
-        
-    //partie commentaire
-
-  
-
-
+          
          return $this->render('article/recommande.html.twig', [
-             'articles' => $article,
-             'form' =>$form->createView()
-             // 'items'=>$panierWithData,
-             // 'total'=>$total,
-             // 'quantity'=>$quantityTotal
-         ]);
+            'articles' => $article,
+            'form' =>$form->createView()
+            // 'items'=>$panierWithData,
+            // 'total'=>$total,
+            // 'quantity'=>$quantityTotal
+        ]);
+            
+       
         
      }
  

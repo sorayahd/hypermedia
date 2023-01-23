@@ -149,7 +149,7 @@ background: white
 
               <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                 <!-- Data -->
-                <p><strong>{{item.product.nom}}</strong></p>
+                <p><strong>{{item.product.description | raw }}</strong></p>
                 <p>{% if item.product.promotion is not null  %}
                                     <span class="text-dark text-decoration-line-through danger ">{{item.product.prix //100 }}€</span>
                                     
@@ -164,15 +164,16 @@ background: white
                 <p>Size: M</p>
 
                 
-                   <a href="{{ path('delete_cart', {id: item.product.id}) }}" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                   <a href="{{ path('delete_cart', {id: item.product.id}) }}" 
+                   class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                   title="Remove item">
-								<i class="fas fa-trash"></i>
+								<i class="fas fa-trash" ></i>
                                </a>
 
                  <a href="{{ path('app_ajout_favoris', {id: item.product.id}) }}" 
-                 class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                 class="btn btn-light btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                   title="add to favoris">
-								<i class="fas fa-heart"></i>
+								<i class="fas fa-heart" style="color:white"></i>
                                </a>
                 <!-- Data -->
               </div>
@@ -181,7 +182,7 @@ background: white
                 <!-- Quantity -->
                 <div class="d-flex mb-4" style="max-width: 300px">
                 
-                  <a href= "{{ path('remove_cart', {id: item.product.id}) }}" class="btn btn-primary px-3 me-2"style="height: 30px;">
+                  <a href= "{{ path('remove_cart', {id: item.product.id}) }}" class="btn btn-success px-3 me-2"style="height: 30px;">
                   
                      <i class="fas fa-minus"></i>
                   </a>
@@ -192,7 +193,7 @@ background: white
                     <label class="form-label" for="form1"></label>
                   </div>
 
-                  <a href= "{{path('add_cart', {id: item.product.id}) }}" class="btn btn-primary px-3 me-2"style="height: 30px;">
+                  <a href= "{{path('add_cart', {id: item.product.id}) }}" class="btn btn-success px-3 me-2"style="height: 30px;">
                     <i class="fas fa-plus"></i>
                   </a>
                 </div>
@@ -244,7 +245,7 @@ background: white
       <div class="col-md-4">
         <div class="card mb-4">
           <div class="card-header py-3">
-            <h5 class="mb-0">Récaputilatif de votre commande</h5>
+            <h5 class="mb-0">Récaputilatif de votre panier</h5>
           </div>
           <div class="card-body">
             <ul class="list-group list-group-flush">
@@ -254,8 +255,8 @@ background: white
                 <span> {{quantity}}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                Livraison
-                <span>Gratuit</span>
+                {# Livraison
+                <span>Gratuit</span> #}
               </li>
               <li
                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -269,7 +270,7 @@ background: white
               </li>
             </ul>
          <a href="{{ path('checkout') }}" 
-         class="btn btn-primary btn-lg btn-block" data-mdb-toggle="tooltip"
+         class="btn btn-primary btn-lg btn-light" style="color:white" data-mdb-toggle="tooltip"
                   title="Remove item">Valider mon panier</a>
      
             {% else %}

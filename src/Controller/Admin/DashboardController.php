@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\Cart;
 use App\Entity\CategorieArticle;
+use App\Entity\Contact;
 use App\Entity\Genre;
 use App\Entity\StatusCommande;
 use App\Entity\Taille;
@@ -46,5 +47,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Status', 'fas fa-user', StatusCommande::class);
         yield MenuItem::linkToRoute('Articles avec leurs taille', 'fas fa-shopping-cart', 'app_taille_article_index');
         yield MenuItem::linkToCrud('Commande', 'fas fa-user', Cart::class);
+        yield MenuItem::linkToCrud('Messages', 'fa fa-commenting-o', Contact::class);
     }
 }

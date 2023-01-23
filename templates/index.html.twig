@@ -107,6 +107,9 @@ border-color:#C9DBC5 !important;
 
                                   <li><a class="dropdown-item" href="{{path('plusVendu')}}">Les plus vendu</a></li>
                                     <li><a class="dropdown-item" href="{{path('plusConsulte')}}">Les Plus consultés</a></li>
+                                    <li><a class="dropdown-item" href="{{path('app_article_recommande')}}">Me recommander</a></li>
+
+                                    
                                
                             </ul>
                         </li>
@@ -145,6 +148,7 @@ border-color:#C9DBC5 !important;
                                 {# <li><a class="dropdown-item" href="#!">Nouveau</a></li> #}
                             </ul>
                         </li>
+                        
                           <form method="post" action="{{ path('app_article_index')}}"  name="recherche" class="form-inline my-2 my-lg-0">
                           
                           
@@ -183,6 +187,7 @@ border-color:#C9DBC5 !important;
                  <li><a href ="{{path ('app_user')}}" class="dropdown-item" >Mon profile</a></li>
                  {# <li><a href ="{{path ('app_user')}}" class="dropdown-item" >Mot de passe</a></li> #}
                  <li><a class="dropdown-item" href="{{path ('app_panier_index')}}">Mes commandes</a></li>
+                 <li><a  href="{{ path('app_contact')}}" class="dropdown-item" href="#">Nous Contacter </a></li>
                  <li><a  href="{{ path('app_logout')}}" class="dropdown-item" href="#">Me déconnecter</a></li>
                  </ul>
                             </div>

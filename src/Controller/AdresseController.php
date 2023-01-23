@@ -36,16 +36,7 @@ class AdresseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $adresseRepository->save($adresse, true);
-            $email = (new TemplatedEmail())
-            ->from('noreplay@solway-cs.com')
-            ->to('soraya@gmail.com')
-            ->cc('solway-cs@solway.com')
-            ->bcc('Amine-Hbibiy@solway-cs.com')
-            ->subject('Nouveau ticket sur le site de solway consulting & services')
-            ->text('Sending emails is fun again!')
-            ->htmlTemplate('emails/test.html.twig');
-
-            $mailer->send($email);
+            
 
             return $this->redirectToRoute('users_profil_modifier', [], Response::HTTP_SEE_OTHER);
         }

@@ -104,10 +104,10 @@ transform: scale(1.5);
                             </div>
                             <p class="about">{{article.description | raw }}</p>
                             <div class="sizes mt-5">
-                                <h6 class="text-uppercase">Size</h6> 
+                                <h6 class="text-uppercase">taille</h6> 
                                 {% for taille in article.tailleArticles %}
                                  
-                                <label class="radio"> <input type="radio" name="size" value="S" > <span> 
+                                <label class="radio"> <input type="radio" name="taille" value="S" > <span> 
                                 {{ taille.taille 
                                 }} </span> </label>
                                 

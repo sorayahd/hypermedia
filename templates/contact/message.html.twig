@@ -1,0 +1,62 @@
+{% extends 'index.html.twig' %}
+{% block body %}
+
+<body>
+
+
+<style>
+table,
+table th {
+  border: 1px solid #cccccc;
+    text-align: center;
+  
+}
+
+td {
+
+  text-align: center;
+  
+}
+</style>
+<div class="page-wrap">
+
+  <!-- Section-->
+        
+            <div class="container px-4 px-lg-5">
+                 <center>
+     {% for message in app.flashes('succes') %}
+    <div class="alert alert-success" role="alert">
+ {{ message }}
+
+ </div>
+ 
+ {% endfor %}
+</center>
+</br></br>
+               {{form_start(form)}}
+              
+              {{form_row(form.message)}}
+              <button type="submit" class="btn btn-success">Envoyer</button>
+
+               {{form_end(form)}}
+               
+         
+                   
+              </div>
+              </div>
+          
+</body>
+   
+
+   
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

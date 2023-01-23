@@ -25,7 +25,7 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
             EmailField::new('email'),
-            TextField::new('password')->setFormType(PasswordType::class),
+           
             ChoiceField::new('roles', 'Roles')
                     ->allowMultipleChoices()
                     ->autocomplete()
