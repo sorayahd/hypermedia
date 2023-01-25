@@ -146,47 +146,7 @@ li.borderless {
 }
 
 </style>
-{#  
-         <div class="container g-xl-1">
-         {{ form_start( checkout)}}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="heading_s1">
-                            <h4>Vos adresses de livraison</h4>
-                            <div class="content"> 
-                            </div>
-                            <a href="{{ path('app_adresse_new') }}" class="btn btn-primary btn-block mt-1">Nouvelle adresse</a>
-                    </div>
-                    <div class="heading_s1">
-                        <h4>Entreprises de livraison</h4>
-                        <div class="content">
-                            {{ form_widget(checkout.transporteur)  | replace({'[spr]' : '<br>'}) | raw }}
-                        </div>
-                    </div>
-                    
-                </div>
- {{ form_widget(checkout.adresse)  | replace({'[spr]' : '<br>'}) | raw }}
-                <div class="col-md-6">
-                    <div class="order_review">
-                        <div class="heading_s1">
-                            <h4>Votre commande</h4>
-                        </div>
-                        <div class="table-responsive order_table">
-                            
-                        </div>
-                        <div class="payment_method">
-                            <div class="heading_s1">
-                                <h4>Payment</h4>
-                            </div>
-                            
-                        </div>
-                       <button type submit class="btn btn-primary btn-block mt-1">Confirmer</a>
-                    </div>
-                </div>
-            </div>
-           {{ form_end(checkout) }}
-        </div>
-    </div>   #}
+
 
 <br>
 
@@ -249,34 +209,7 @@ li.borderless {
 
                     
                     <div class="card mt-2 border-0 second-card">
-                        <!-- Form -->
-                        {# <div class="card-body">
-                            <h5 class="card-title">Payer</h5>
-                            <div class="row">
-                                <div class="col-md-auto col-sm-auto ">
-                                    <div class="custom-control custom-radio custom-control-inline "> <input id="customRadioInline11" type="radio" name="customRadioInline11" class="custom-control-input" checked="true"> <label for="customRadioInline11" class="custom-control-label label-radio"><img src="https://img.icons8.com/color/48/000000/visa.png" class="card-image"> </label> </div>
-                                </div>
-                                <div class="col-md-auto col-sm">
-                                    <div class="custom-control custom-radio custom-control-inline "> <input id="customRadioInline22" type="radio" name="customRadioInline11" class="custom-control-input"> <label for="customRadioInline22" class="custom-control-label label-radio"><img src="https://img.icons8.com/officel/48/000000/discover.png" class="card-image"></label> </div>
-                                </div>
-                            </div> <!-- Payment Form -->
-                            <form method="get" action="">
-                                <div class="form-group "> <label for="cc-number" class="control-label mt-3">Card number</label> <input id="cc-number" name="cc-number" type="tel" placeholder="xxxx-xxxx-xxxx-xxxx" class="form-control form-control-lg cc-number identified visa " value="" data-val="true" data-val-required="Please enter the card number" data-val-cc-number="Please enter a valid card number" autocomplete="cc-number"> </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6 col-sm-6"> <label for="cc-exp" class="control-label ">Expiration date</label> <input id="cc-exp" type="tel" class=" form-control form-control-lg cc-exp" autocomplete="cc-exp" placeholder="MM / YY" required> </div>
-                                    <div class="form-group col-md-6 col-sm-6"> <label for="cc-cvc" class="control-label ">CVV<span><i class="fa fa-info-circle px-2" aria-hidden="true"></i> </span> </label> <input id="cc-cvc" type="tel" class="form-control-lg form-control cc-cvc " autocomplete="off" placeholder="&bull;&bull;&bull;" required> </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-8 col-sm-6"> <label for="inputState">State</label> <select id="inputState" class="form-control form-control-lg">
-                                            <option selected>United State</option>
-                                            <option>India</option>
-                                            <option>UK</option>
-                                            <option>China</option>
-                                        </select> </div>
-                                    <div class="form-group col-md-4 col-sm-6"> <label for="inputZip">Zip</label> <input type="text" class="form-control form-control-lg" id="inputZip" placeholder="111111"> </div>
-                                </div>
-                            </form>
-                        </div> #}
+                      
                     </div>
                 </div>
                 <div class="col-1 d-none d-sm-block"></div> <!-- Right Half -->

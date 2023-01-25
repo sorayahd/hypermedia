@@ -499,6 +499,9 @@ class ArticleController extends AbstractController
         $article->setnombreLike($cmpt);
         //$entityManager->persist($article);
         $entityManager->persist($like);
+        $entityManager->persist($article);
+        
+
         $entityManager->flush();
 
         
